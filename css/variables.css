@@ -1,0 +1,31 @@
+/* ==========================================================================
+   Design tokens
+   ========================================================================== */
+:root {
+  --color_bg: #151515;
+  --color_bg_elevated: #1f1f1f;
+  --color_bg_elevated_2: #262626;
+  --color_border: #333333;
+  --color_text: #ffffff;
+  --color_text_muted: #b3b3b3;
+  --color_accent: #FFCE00;
+  --color_accent_dim: #4d3f00;
+  --color_error: #ff6b6b;
+
+  --radius: 10px;
+  --radius_sm: 6px;
+  --radius_pill: 999px;
+
+  --space_1: 8px;
+  --space_2: 16px;
+  --space_3: 24px;
+  --space_4: 32px;
+  --space_5: 64px;
+
+  --font_heading: "Gmarket Sans TTF", "Pretendard Variable", Pretendard, -apple-system, sans-serif;
+  --font_body: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --container_max: 1280px;
+  --header_height: 64px;
+  --transition_base: 0.25s ease;
+}

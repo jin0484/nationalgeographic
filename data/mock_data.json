@@ -1,0 +1,302 @@
+{
+  "banners": [
+    {
+      "id": "banner_01",
+      "image": "images/banner1.png",
+      "imageMobile": "images/m_banner1.png",
+      "category": "여행",
+      "title": "블링크",
+      "description": "시각장애를 선고받은 아이들이 세상의 아름다움을 경험하기 위해 떠나는 여행",
+      "link": "#"
+    },
+    {
+      "id": "banner_02",
+      "image": "images/banner2.png",
+      "imageMobile": "images/m_banner2.png",
+      "category": "과학",
+      "title": "우주로 향하는 시선",
+      "description": "헬멧 너머로 담아낸 우주비행사의 마지막 점검",
+      "link": "#"
+    },
+    {
+      "id": "banner_03",
+      "image": "images/banner3.png",
+      "imageMobile": "images/m_banner3.png",
+      "category": "인물",
+      "title": "최초의 여성 우주비행사, 샐리 라이드",
+      "description": "우주로 향하는 문을 연 사람들의 이야기",
+      "link": "#"
+    },
+    {
+      "id": "banner_04",
+      "image": "images/banner4.png",
+      "imageMobile": "images/m_banner4.png",
+      "category": "동물",
+      "title": "태평양의 혹등고래",
+      "description": "수면 위로 솟아오른 거대한 몸짓이 전하는 메시지",
+      "link": "#"
+    }
+  ],
+  "todaysExp": [
+    {
+      "id": "africa",
+      "name": "아프리카",
+      "coords": { "x": 53, "y": 52 },
+      "videos": [
+        {
+          "id": "africa_01",
+          "category": "역사",
+          "title": "수단 피라미드가 품은 미라의 비밀",
+          "date": "2026.05.14",
+          "thumbnail": "images/magazine3.png"
+        },
+        {
+          "id": "africa_02",
+          "category": "동물",
+          "title": "사바나의 어린 사자들",
+          "date": "2026.06.02",
+          "thumbnail": "images/recommend2.png"
+        }
+      ]
+    },
+    {
+      "id": "asia",
+      "name": "아시아",
+      "coords": { "x": 74, "y": 32 },
+      "videos": [
+        {
+          "id": "asia_01",
+          "category": "여행",
+          "title": "몽골 초원, 무지개 아래에서",
+          "date": "2026.04.21",
+          "thumbnail": "images/banner1.png"
+        },
+        {
+          "id": "asia_02",
+          "category": "동물",
+          "title": "밀림 속 초록빛 눈동자",
+          "date": "2026.03.30",
+          "thumbnail": "images/magazine2.png"
+        }
+      ]
+    },
+    {
+      "id": "north_america",
+      "name": "북아메리카",
+      "coords": { "x": 16, "y": 30 },
+      "videos": [
+        {
+          "id": "na_01",
+          "category": "여행",
+          "title": "알래스카, 부자의 낚시 여행",
+          "date": "2026.07.02",
+          "thumbnail": "images/map2.png"
+        },
+        {
+          "id": "na_02",
+          "category": "사진",
+          "title": "도시의 속도, 뉴욕 스트리트 라이더",
+          "date": "2026.02.18",
+          "thumbnail": "images/magazine1.png"
+        }
+      ]
+    },
+    {
+      "id": "south_america",
+      "name": "남아메리카",
+      "coords": { "x": 28, "y": 66 },
+      "videos": [
+        {
+          "id": "sa_01",
+          "category": "자연",
+          "title": "아마존, 카누가 멈춘 자리",
+          "date": "2026.01.27",
+          "thumbnail": "images/quiz.png"
+        },
+        {
+          "id": "sa_02",
+          "category": "동물",
+          "title": "태평양의 혹등고래",
+          "date": "2026.06.09",
+          "thumbnail": "images/banner4.png"
+        }
+      ]
+    },
+    {
+      "id": "europe",
+      "name": "유럽",
+      "coords": { "x": 54, "y": 21 },
+      "videos": [
+        {
+          "id": "eu_01",
+          "category": "컬처",
+          "title": "미슐랭 셰프의 부엌",
+          "date": "2026.05.30",
+          "thumbnail": "images/map3_video.png"
+        },
+        {
+          "id": "eu_02",
+          "category": "동물",
+          "title": "심해에서 만난 낯선 얼굴",
+          "date": "2026.03.11",
+          "thumbnail": "images/recommend3.png"
+        }
+      ]
+    },
+    {
+      "id": "oceania",
+      "name": "오세아니아",
+      "coords": { "x": 87, "y": 76 },
+      "videos": [
+        {
+          "id": "oc_01",
+          "category": "동물",
+          "title": "황제펭귄, 얼음 위의 첫걸음",
+          "date": "2026.07.14",
+          "thumbnail": "images/recommend1.png"
+        },
+        {
+          "id": "oc_02",
+          "category": "동물",
+          "title": "태평양의 혹등고래",
+          "date": "2026.06.09",
+          "thumbnail": "images/banner4.png"
+        }
+      ]
+    }
+  ],
+  "magazine": [
+    {
+      "id": "mag_mummy",
+      "category": "역사",
+      "title": "잠들지 않는 왕들",
+      "writer": "김도윤",
+      "photographer": "조엘 사토레",
+      "description": "수단 메로에의 모래 언덕 아래, 3천 년의 시간을 견뎌낸 왕족의 미라가 발굴됐다. 자외선 촬영이 드러낸 뼈와 유물의 색채는 고대 쿠시 왕국의 마지막 비밀을 들려준다.",
+      "hashtags": ["수단", "고고학", "미라", "쿠시왕국"],
+      "thumbnail": "images/magazine3.png"
+    },
+    {
+      "id": "mag_snake",
+      "category": "동물",
+      "title": "초록빛 사냥꾼의 눈",
+      "writer": "박세인",
+      "photographer": "크리스티안 지글러",
+      "description": "동남아시아 우림에 서식하는 대나무살모사의 눈동자를 초근접 촬영했다. 밤에도 온도를 감지하는 이 뱀의 감각기관은 진화가 빚어낸 정교한 사냥 도구다.",
+      "hashtags": ["동남아시아", "파충류", "우림", "근접촬영"],
+      "thumbnail": "images/magazine2.png"
+    },
+    {
+      "id": "mag_bike",
+      "category": "사진",
+      "title": "두 바퀴위의 자유",
+      "writer": "기리 네이션",
+      "photographer": "브라이언 핑크",
+      "description": "한계에 도전하는 자전거 라이더들이 어떻게 미국 뉴욕시의 거리를 다시 점령했는지 한 사진작가의 렌즈를 통해 살펴본다.",
+      "hashtags": ["미국", "뉴욕", "자전거", "코로나19"],
+      "thumbnail": "images/magazine1.png"
+    },
+    {
+      "id": "mag_astronaut",
+      "category": "과학",
+      "title": "헬멧 너머의 고요",
+      "writer": "이하은",
+      "photographer": "닉 리스카",
+      "description": "발사를 앞둔 마지막 순간, 우주비행사의 헬멧 유리에 비친 것은 두려움이 아니라 집중이었다. 지구 밖으로 향하는 사람들의 표정을 기록했다.",
+      "hashtags": ["우주", "NASA", "우주비행사", "발사"],
+      "thumbnail": "images/banner2.png"
+    },
+    {
+      "id": "mag_sallyride",
+      "category": "인물",
+      "title": "하늘을 연 여성",
+      "writer": "정유나",
+      "photographer": "NASA 아카이브",
+      "description": "1983년, 샐리 라이드는 미국 최초의 여성 우주비행사로 챌린저호에 올랐다. 헬멧을 쓰는 그 순간의 기록은 이후 수많은 여성 과학자들의 이정표가 됐다.",
+      "hashtags": ["샐리라이드", "NASA", "여성과학자", "역사"],
+      "thumbnail": "images/banner3.png"
+    },
+    {
+      "id": "mag_lion",
+      "category": "동물",
+      "title": "사바나의 첫 걸음마",
+      "writer": "최민재",
+      "photographer": "베벌리 조",
+      "description": "탄자니아 세렝게티에서 태어난 지 몇 주 되지 않은 어린 사자들이 무리 안에서 서열과 놀이를 배워간다. 생존을 위한 첫 사회화 과정을 기록했다.",
+      "hashtags": ["탄자니아", "사자", "세렝게티", "야생동물"],
+      "thumbnail": "images/recommend2.png"
+    }
+  ],
+  "recommend": [
+    {
+      "id": "rec_shark",
+      "category": "동물",
+      "title": "어린 상어",
+      "thumbnail": "images/recommend3.png",
+      "description": "얕은 바다와 깊은 심해 사이, 좀처럼 카메라 앞에 모습을 드러내지 않는 개복치와 상어를 뒤쫓았다. 낯설고 기묘한 얼굴 뒤에 숨겨진 생존 전략과 감각기관의 비밀을 들여다보면, 우리가 알던 바다 생물의 이미지가 완전히 달라진다.",
+      "expertQuote": "그로테스크함 너머에 있는 생존의 정교함을 보여주는, 바다에 대한 편견을 깨는 다큐멘터리.",
+      "rating": 4.5,
+      "hashtags": ["바다", "심해생물", "탐험"],
+      "moreLink": "#"
+    },
+    {
+      "id": "rec_lion",
+      "category": "동물",
+      "title": "자라나는 동물들",
+      "thumbnail": "images/recommend2.png",
+      "description": "탄자니아 사바나에서 태어난 사자 무리의 첫 한 해를 따라간다. 서투른 사냥 연습과 형제간의 다툼, 그리고 무리 전체가 나누는 끈끈한 유대감까지, 야생에서 살아남기 위해 배워가는 어린 사자들의 성장기를 담았다.",
+      "expertQuote": "맹수 다큐를 넘어, 가족이라는 유대가 생존의 가장 큰 무기임을 보여주는 따뜻한 기록.",
+      "rating": 4.5,
+      "hashtags": ["동물", "사자", "사바나"],
+      "moreLink": "#"
+    },
+    {
+      "id": "rec_penguin",
+      "category": "동물",
+      "title": "펭귄의 비밀",
+      "thumbnail": "images/recommend1.png",
+      "description": "내셔널지오그래픽의 탐험가 버티 그레고리가 2년에 걸친 특별한 여정을 통해 지금까지 카메라에 찍힌 적 없는 비밀스러운 전통과 놀라운 지능, 끈끈한 유대감을 자랑하는 펭귄 사회를 발견했다. 이 놀라운 시리즈는 펭귄의 강력한 우정부터 지구상 최고 극한의 장소에서 독창성과 혁신으로 위험을 감수하는 펭귄들의 용기 있는 모습까지, 우리 생각보다 더 인간과 닮은 펭귄의 모습을 보여 준다.",
+      "expertQuote": "경이로운 자연 다큐를 넘어, 펭귄의 놀라운 지능과 사회성을 통해 인간과 생명의 본질을 새롭게 바라보게 하는 멋진 기록.",
+      "rating": 4.5,
+      "hashtags": ["동물", "펭귄", "힐링"],
+      "moreLink": "#"
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q1",
+      "question": "지구에서 가장 큰 육상 동물은 무엇일까요?",
+      "choices": ["아프리카코끼리", "기린", "하마", "코뿔소"],
+      "answerIndex": 0,
+      "explanation": "아프리카코끼리는 몸무게가 최대 6~7톤에 달하는 지구 최대의 육상 동물입니다."
+    },
+    {
+      "id": "q2",
+      "question": "세계에서 가장 긴 강으로 널리 알려진 강은?",
+      "choices": ["아마존강", "나일강", "양쯔강", "미시시피강"],
+      "answerIndex": 1,
+      "explanation": "나일강은 총길이 약 6,650km로 세계에서 가장 긴 강으로 가장 널리 알려져 있습니다."
+    },
+    {
+      "id": "q3",
+      "question": "지구 표면의 약 몇 %가 바다로 덮여 있을까요?",
+      "choices": ["51%", "61%", "71%", "81%"],
+      "answerIndex": 2,
+      "explanation": "지구 표면의 약 71%는 바다로 덮여 있으며, 나머지 29%만이 육지입니다."
+    },
+    {
+      "id": "q4",
+      "question": "다음 동물 중 야행성이 아닌 것은?",
+      "choices": ["부엉이", "박쥐", "다람쥐", "너구리"],
+      "answerIndex": 2,
+      "explanation": "다람쥐는 낮에 활동하는 대표적인 주행성 동물입니다."
+    },
+    {
+      "id": "q5",
+      "question": "지구에서 가장 깊은 해구는 어디일까요?",
+      "choices": ["마리아나 해구", "통가 해구", "필리핀 해구", "자바 해구"],
+      "answerIndex": 0,
+      "explanation": "마리아나 해구는 수심 약 10,900m로 지구상에서 가장 깊은 해저 지형입니다."
+    }
+  ]
+}
