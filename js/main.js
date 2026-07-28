@@ -647,17 +647,38 @@
     document.body.style.overflow = 'hidden';
     document.getElementById('search_toggle_btn').setAttribute('aria-expanded', 'true');
     renderRecentSearches();
+    // Start from the collapsed state, then let the next frame trigger the transition.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => panel.classList.add('is_open'));
+    });
     document.getElementById('search_input').focus();
     document.addEventListener('keydown', handleSearchKeydown);
+    document.addEventListener('click', handleSearchOutsideClick);
+  }
+
+  function handleSearchOutsideClick(event) {
+    const panel = document.getElementById('search_panel');
+    const toggleBtn = document.getElementById('search_toggle_btn');
+    if (panel.contains(event.target) || toggleBtn.contains(event.target)) return;
+    closeSearch();
   }
 
   function closeSearch() {
     const panel = document.getElementById('search_panel');
-    panel.hidden = true;
+    panel.classList.remove('is_open');
     document.body.style.overflow = '';
     document.getElementById('search_toggle_btn').setAttribute('aria-expanded', 'false');
     document.removeEventListener('keydown', handleSearchKeydown);
+    document.removeEventListener('click', handleSearchOutsideClick);
     if (lastFocusedBeforeSearch) lastFocusedBeforeSearch.focus();
+
+    const finishClose = (event) => {
+      if (event && event.target !== panel) return;
+      panel.hidden = true;
+      panel.removeEventListener('transitionend', finishClose);
+    };
+    panel.addEventListener('transitionend', finishClose);
+    window.setTimeout(finishClose, 400);
   }
 
   function handleSearchToggle() {

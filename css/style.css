@@ -159,16 +159,30 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
 .gnb_link.is_featured { color: var(--color_text); font-weight: 700; }
 .gnb_link.is_active { color: var(--color_accent); }
 
-/* Search overlay (full-screen) */
+/* Search overlay (drops down, sized to its content) */
 .search_overlay {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 250;
+  max-height: 80vh;
   background: var(--color_bg);
   border-radius: 0 0 28px 28px;
   overflow-y: auto;
+  transform: translateY(-100%);
+  opacity: 0;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+  box-shadow: 0 50px 90px -20px rgba(255, 197, 61, 0.35);
 }
 .search_overlay[hidden] { display: none; }
+.search_overlay.is_open {
+  transform: translateY(0);
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .search_overlay { transition: none; }
+}
 
 .search_overlay_header {
   display: flex;
@@ -202,7 +216,7 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
 .search_overlay_body {
   max-width: var(--container_max);
   margin: 0 auto;
-  padding: var(--space_5) var(--space_2) var(--space_3);
+  padding: var(--space_5) var(--space_2) var(--space_5);
 }
 
 .search_field {
