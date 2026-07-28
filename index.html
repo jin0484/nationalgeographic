@@ -167,8 +167,20 @@
   <section class="section magazine_section" id="magazine" aria-labelledby="magazine_heading">
     <div class="section_inner">
       <h2 class="section_heading" id="magazine_heading">Magazine</h2>
-      <p class="section_desc">내셔널지오그래픽이 엄선한 이야기</p>
-      <div class="card_grid" id="magazine_grid" aria-live="polite"></div>
+
+      <div class="magazine_carousel">
+        <button type="button" class="magazine_arrow magazine_arrow_prev" id="magazine_prev_btn">
+          <img src="images/icon/left_arrow.svg" alt="" width="9" height="16" />
+          <span class="sr_only">이전 매거진</span>
+        </button>
+
+        <div class="magazine_track" id="magazine_grid" aria-live="polite"></div>
+
+        <button type="button" class="magazine_arrow magazine_arrow_next" id="magazine_next_btn">
+          <img src="images/icon/right_arrow.svg" alt="" width="9" height="16" />
+          <span class="sr_only">다음 매거진</span>
+        </button>
+      </div>
     </div>
   </section>
 

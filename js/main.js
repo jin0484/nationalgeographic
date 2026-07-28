@@ -782,6 +782,7 @@
 
   function initScrollTopButton() {
     const btn = document.getElementById('scroll_top_btn');
+    if (!btn) return;
     window.addEventListener('scroll', () => {
       btn.hidden = window.scrollY < 400;
     });
@@ -848,18 +849,31 @@
   /* Bootstrap                                                            */
   /* ------------------------------------------------------------------ */
 
+  function addClickListener(id, handler) {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('click', handler);
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('search_toggle_btn').addEventListener('click', handleSearchToggle);
-    document.getElementById('search_close_btn').addEventListener('click', closeSearch);
-    document.getElementById('search_form').addEventListener('submit', handleSearchSubmit);
-    document.getElementById('search_input').addEventListener('input', handleSearchInputChange);
-    document.getElementById('menu_toggle_btn').addEventListener('click', handleMenuToggle);
-    document.getElementById('exp_modal_close_btn').addEventListener('click', closeExpModal);
-    document.getElementById('exp_modal').addEventListener('click', (event) => {
-      if (event.target.id === 'exp_modal') closeExpModal();
-    });
-    document.getElementById('magazine_prev_btn').addEventListener('click', handleMagazinePrev);
-    document.getElementById('magazine_next_btn').addEventListener('click', handleMagazineNext);
+    addClickListener('search_toggle_btn', handleSearchToggle);
+    addClickListener('search_close_btn', closeSearch);
+    addClickListener('menu_toggle_btn', handleMenuToggle);
+    addClickListener('exp_modal_close_btn', closeExpModal);
+    addClickListener('magazine_prev_btn', handleMagazinePrev);
+    addClickListener('magazine_next_btn', handleMagazineNext);
+
+    const searchForm = document.getElementById('search_form');
+    if (searchForm) searchForm.addEventListener('submit', handleSearchSubmit);
+
+    const searchInput = document.getElementById('search_input');
+    if (searchInput) searchInput.addEventListener('input', handleSearchInputChange);
+
+    const expModal = document.getElementById('exp_modal');
+    if (expModal) {
+      expModal.addEventListener('click', (event) => {
+        if (event.target.id === 'exp_modal') closeExpModal();
+      });
+    }
 
     initScrollTopButton();
     initBrandTypoGlow();
