@@ -10,8 +10,7 @@
   const DEFAULT_SEARCH_SUGGESTIONS = ['동물', '여행', '블링크'];
 
   const STORAGE_KEYS = {
-    QUIZ_SCORE: 'natgeo_quiz_score',
-    RECENT_SEARCH: 'natgeo_recent_search'
+    QUIZ_SCORE: 'natgeo_quiz_score'
   };
 
   const BOOKMARK_SVG = `<svg viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -107,9 +106,157 @@
   let bannerAutoplayTimer = null;
   let bannerDragState = null;
 
+  function getBannerLayoutParams() {
+    const w = window.innerWidth;
+    if (w >= 1280) return { sideX: 42, sideScale: 0.76, sideOpacity: 0.32, farX: 64, farScale: 0.6, farOpacity: 0 };
+    if (w >= 768) return { sideX: 36, sideScale: 0.84, sideOpacity: 0.4, farX: 56, farScale: 0.7, farOpacity: 0 };
+    return { sideX: 28, sideScale: 0.9, sideOpacity: 0.5, farX: 44, farScale: 0.82, farOpacity: 0 };
+  }
+
+  // Shortest circular distance from `current` to `i` (e.g. wrapping past the last slide back to 0 yields +1, not +N-1) so the loop always feels continuous.
+  function getRelativeOffset(i, current, total) {
+    let diff = (i - current) % total;
+    if (diff > total / 2) diff -= total;
+    if (diff < -total / 2) diff += total;
+    return diff;
+  }
+
+  function getBannerContentEls(slide) {
+    return [
+      slide.querySelector('.banner_title'),
+      slide.querySelector('.banner_desc'),
+      slide.querySelector('.banner_cta_btn')
+    ].filter(Boolean);
+  }
+
+  function animateBannerContentIn(slide, animate) {
+    const els = getBannerContentEls(slide);
+    if (!els.length) return;
+    if (window.gsap) {
+      gsap.killTweensOf(els);
+      if (!animate) {
+        gsap.set(els, { opacity: 1, y: 0, filter: 'blur(0px)' });
+        return;
+      }
+      gsap.set(els, { opacity: 0, y: 32, filter: 'blur(14px)' });
+      gsap.to(els, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.9, ease: 'power3.out', stagger: 0.15, delay: 0.2 });
+    } else {
+      els.forEach((el, idx) => {
+        el.style.transition = animate
+          ? `opacity 0.9s ease ${0.2 + idx * 0.15}s, transform 0.9s ease ${0.2 + idx * 0.15}s, filter 0.9s ease ${0.2 + idx * 0.15}s`
+          : 'none';
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+        el.style.filter = 'blur(0px)';
+      });
+    }
+  }
+
+  function resetBannerContent(slide) {
+    const els = getBannerContentEls(slide);
+    if (!els.length) return;
+    if (window.gsap) {
+      gsap.killTweensOf(els);
+      gsap.set(els, { opacity: 0, y: 32, filter: 'blur(14px)' });
+    } else {
+      els.forEach((el) => {
+        el.style.transition = 'none';
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(32px)';
+        el.style.filter = 'blur(14px)';
+      });
+    }
+  }
+
+  function applyBannerLayout(animate) {
+    const layout = getBannerLayoutParams();
+    const slides = Array.from(document.querySelectorAll('#banner_track .banner_slide'));
+    const contents = Array.from(document.querySelectorAll('#banner_content_track .banner_slide_overlay'));
+    const total = slides.length;
+    const duration = animate ? 1.1 : 0;
+
+    slides.forEach((slide, i) => {
+      const rel = getRelativeOffset(i, currentBannerIndex, total);
+      const isActive = rel === 0;
+      let xPercent = 0, scale = 1, opacity = 1, zIndex = 10;
+
+      if (!isActive) {
+        const dir = Math.sign(rel) || 1;
+        if (Math.abs(rel) === 1) {
+          xPercent = dir * layout.sideX; scale = layout.sideScale; opacity = layout.sideOpacity; zIndex = 5;
+        } else {
+          xPercent = dir * layout.farX; scale = layout.farScale; opacity = layout.farOpacity; zIndex = 1;
+        }
+      }
+
+      slide.classList.toggle('is_active', isActive);
+
+      if (window.gsap) {
+        gsap.killTweensOf(slide);
+        if (duration === 0) {
+          gsap.set(slide, { xPercent, scale, opacity, zIndex });
+        } else {
+          gsap.set(slide, { zIndex });
+          gsap.to(slide, { xPercent, scale, opacity, duration, ease: 'power3.inOut' });
+        }
+      } else {
+        slide.style.zIndex = String(zIndex);
+        slide.style.transition = animate
+          ? 'transform 1.1s cubic-bezier(0.65, 0, 0.35, 1), opacity 1.1s ease'
+          : 'none';
+        slide.style.transform = `translateX(${xPercent}%) scale(${scale})`;
+        slide.style.opacity = String(opacity);
+      }
+    });
+
+    contents.forEach((content, i) => {
+      const isActive = getRelativeOffset(i, currentBannerIndex, total) === 0;
+      content.classList.toggle('is_active', isActive);
+      if (isActive) animateBannerContentIn(content, animate);
+      else resetBannerContent(content);
+    });
+  }
+
+  function updateBannerDragPreview(deltaX) {
+    if (!window.gsap) return;
+    const slider = document.getElementById('banner_slider');
+    if (!slider.clientWidth) return;
+
+    const layout = getBannerLayoutParams();
+    const progress = Math.max(-1, Math.min(1, deltaX / slider.clientWidth));
+    const dir = progress < 0 ? 1 : -1; // dragging left reveals the "next" slide (rel === 1)
+    const t = Math.abs(progress);
+
+    const slides = Array.from(document.querySelectorAll('#banner_track .banner_slide'));
+    const total = slides.length;
+
+    slides.forEach((slide, i) => {
+      const rel = getRelativeOffset(i, currentBannerIndex, total);
+      if (rel !== 0 && rel !== dir) return;
+      gsap.killTweensOf(slide);
+      if (rel === 0) {
+        gsap.set(slide, {
+          xPercent: progress * 100,
+          scale: 1 - t * (1 - layout.sideScale),
+          opacity: 1 - t * (1 - layout.sideOpacity),
+          zIndex: 10
+        });
+      } else {
+        const fromX = rel * layout.sideX;
+        gsap.set(slide, {
+          xPercent: fromX + (0 - fromX) * t,
+          scale: layout.sideScale + (1 - layout.sideScale) * t,
+          opacity: layout.sideOpacity + (1 - layout.sideOpacity) * t,
+          zIndex: 9
+        });
+      }
+    });
+  }
+
   function renderBanners(banners) {
     bannerItems = banners || [];
     const track = document.getElementById('banner_track');
+    const contentTrack = document.getElementById('banner_content_track');
     const dotsWrap = document.getElementById('banner_dots');
     const previewTrack = document.getElementById('banner_preview_track');
     if (!track || !bannerItems.length) return;
@@ -120,14 +267,17 @@
           <source media="(max-width: 767px)" srcset="${banner.imageMobile}">
           <img src="${banner.image}" alt="" draggable="false" />
         </picture>
-        <div class="banner_slide_overlay">
-          <h2 class="banner_title">${escapeHtml(banner.title)}</h2>
-          <p class="banner_desc">${escapeHtml(banner.description)}</p>
-          <a class="banner_cta_btn" href="${banner.link}">
-            <span>see now</span>
-            <span class="banner_cta_icon" aria-hidden="true">→</span>
-          </a>
-        </div>
+      </div>
+    `).join('');
+
+    contentTrack.innerHTML = bannerItems.map((banner) => `
+      <div class="banner_slide_overlay">
+        <h2 class="banner_title">${escapeHtml(banner.title)}</h2>
+        <p class="banner_desc">${escapeHtml(banner.description)}</p>
+        <a class="banner_cta_btn" href="${banner.link}">
+          <span>see now</span>
+          <span class="banner_cta_icon" aria-hidden="true">→</span>
+        </a>
       </div>
     `).join('');
 
@@ -164,13 +314,19 @@
     initBannerDrag();
     goToBanner(0, true);
     startBannerAutoplay();
+
+    let bannerResizeTimer = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(bannerResizeTimer);
+      bannerResizeTimer = setTimeout(() => applyBannerLayout(false), 150);
+    });
   }
 
   function goToBanner(index, isInitial) {
     if (!bannerItems.length) return;
     currentBannerIndex = (index + bannerItems.length) % bannerItems.length;
-    const track = document.getElementById('banner_track');
-    track.style.transform = `translateX(-${currentBannerIndex * 100}%)`;
+
+    applyBannerLayout(!isInitial);
 
     document.querySelectorAll('.banner_dot').forEach((dot, i) => {
       const isActive = i === currentBannerIndex;
@@ -193,7 +349,7 @@
     const previewTrack = document.getElementById('banner_preview_track');
     const previewCards = previewTrack.querySelectorAll('.banner_preview_card');
     const cardWidth = previewCards[0] ? previewCards[0].offsetWidth : 0;
-    const gap = 16;
+    const gap = 32;
     previewTrack.style.transform = `translateX(-${currentBannerIndex * (cardWidth + gap)}px)`;
   }
 
@@ -215,11 +371,10 @@
 
   function initBannerDrag() {
     const slider = document.getElementById('banner_slider');
-    const track = document.getElementById('banner_track');
 
     const handlePointerDown = (event) => {
+      if (event.target.closest('button, a')) return;
       bannerDragState = { startX: event.clientX, deltaX: 0, pointerId: event.pointerId };
-      track.style.transition = 'none';
       stopBannerAutoplay();
       slider.setPointerCapture(event.pointerId);
     };
@@ -227,19 +382,18 @@
     const handlePointerMove = (event) => {
       if (!bannerDragState) return;
       bannerDragState.deltaX = event.clientX - bannerDragState.startX;
-      const percent = (bannerDragState.deltaX / slider.clientWidth) * 100;
-      track.style.transform = `translateX(calc(-${currentBannerIndex * 100}% + ${percent}%))`;
+      updateBannerDragPreview(bannerDragState.deltaX);
     };
 
     const handlePointerUp = () => {
       if (!bannerDragState) return;
-      track.style.transition = '';
-      if (Math.abs(bannerDragState.deltaX) > DRAG_THRESHOLD_PX) {
-        goToBanner(currentBannerIndex + (bannerDragState.deltaX < 0 ? 1 : -1));
+      const deltaX = bannerDragState.deltaX;
+      bannerDragState = null;
+      if (Math.abs(deltaX) > DRAG_THRESHOLD_PX) {
+        goToBanner(currentBannerIndex + (deltaX < 0 ? 1 : -1));
       } else {
         goToBanner(currentBannerIndex);
       }
-      bannerDragState = null;
       startBannerAutoplay();
     };
 
@@ -257,7 +411,8 @@
   /* Today's Exp map                                                     */
   /* ------------------------------------------------------------------ */
 
-  let lastFocusedBeforeModal = null;
+  let lastFocusedBeforePopover = null;
+  let activeExpPin = null;
 
   function renderMapPins(regions) {
     const layer = document.getElementById('map_pin_layer');
@@ -271,57 +426,73 @@
     `).join('');
 
     layer.querySelectorAll('.map_pin').forEach((pin) => {
-      pin.addEventListener('click', () => openExpModal(pin.dataset.regionId, pin));
+      pin.addEventListener('click', () => openExpPopover(pin.dataset.regionId, pin));
     });
   }
 
-  function openExpModal(regionId, triggerEl) {
+  function openExpPopover(regionId, triggerEl) {
     const region = natGeoData.todaysExp.find((r) => r.id === regionId);
-    if (!region) return;
+    if (!region || !region.videos.length) return;
+    const video = region.videos[0];
 
-    lastFocusedBeforeModal = triggerEl || document.activeElement;
+    lastFocusedBeforePopover = triggerEl || document.activeElement;
+    activeExpPin = triggerEl || null;
 
-    const modal = document.getElementById('exp_modal');
-    document.getElementById('exp_modal_title').textContent = `${region.name} 추천 콘텐츠`;
-    document.getElementById('exp_modal_body').innerHTML = `
-      <ul class="modal_video_list">
-        ${region.videos.map((video) => `
-          <li class="modal_video_card">
-            <span class="modal_video_thumb">
-              <img src="${video.thumbnail}" alt="" />
-              <span class="card_play_badge" aria-hidden="true"></span>
-            </span>
-            <span>
-              <span class="card_category">${escapeHtml(video.category)}</span>
-              <p class="card_title">${escapeHtml(video.title)}</p>
-              <p class="card_date"><time>${escapeHtml(video.date)}</time></p>
-            </span>
-          </li>
-        `).join('')}
-      </ul>
-    `;
+    const popover = document.getElementById('exp_popover');
+    document.getElementById('exp_popover_thumb_img').src = video.thumbnail;
+    document.getElementById('exp_popover_title').textContent = video.title;
+    document.getElementById('exp_popover_tag').textContent = video.category;
+    document.getElementById('exp_popover_desc').textContent = video.description || '';
 
-    modal.hidden = false;
-    document.addEventListener('keydown', handleModalKeydown);
-    document.getElementById('exp_modal_close_btn').focus();
+    popover.hidden = false;
+    positionExpPopover(popover, triggerEl);
+    requestAnimationFrame(() => popover.classList.add('is_open'));
+
+    document.addEventListener('keydown', handlePopoverKeydown);
+    document.addEventListener('pointerdown', handlePopoverOutsideClick);
   }
 
-  function closeExpModal() {
-    const modal = document.getElementById('exp_modal');
-    modal.hidden = true;
-    document.removeEventListener('keydown', handleModalKeydown);
-    if (lastFocusedBeforeModal) lastFocusedBeforeModal.focus();
+  function positionExpPopover(popover, pin) {
+    const map = document.getElementById('todays_exp_map');
+    if (!map || !pin) return;
+
+    const mapRect = map.getBoundingClientRect();
+    const pinRect = pin.getBoundingClientRect();
+    const popoverWidth = popover.offsetWidth || 300;
+    const popoverHeight = popover.offsetHeight || 320;
+    const margin = 8;
+
+    let left = (pinRect.left - mapRect.left) - popoverWidth * 0.15;
+    let top = (pinRect.top - mapRect.top) + pinRect.height / 2 + 16;
+
+    const maxLeft = Math.max(margin, mapRect.width - popoverWidth - margin);
+    const maxTop = Math.max(margin, mapRect.height - popoverHeight - margin);
+    left = Math.min(Math.max(margin, left), maxLeft);
+    top = Math.min(Math.max(margin, top), maxTop);
+
+    popover.style.left = `${left}px`;
+    popover.style.top = `${top}px`;
   }
 
-  function handleModalKeydown(event) {
+  function closeExpPopover() {
+    const popover = document.getElementById('exp_popover');
+    popover.classList.remove('is_open');
+    popover.hidden = true;
+    activeExpPin = null;
+    document.removeEventListener('keydown', handlePopoverKeydown);
+    document.removeEventListener('pointerdown', handlePopoverOutsideClick);
+    if (lastFocusedBeforePopover) lastFocusedBeforePopover.focus();
+  }
+
+  function handlePopoverKeydown(event) {
     if (event.key === 'Escape') {
-      closeExpModal();
+      closeExpPopover();
       return;
     }
     if (event.key !== 'Tab') return;
 
-    const modal = document.getElementById('exp_modal');
-    const focusable = modal.querySelectorAll('button, a[href]');
+    const popover = document.getElementById('exp_popover');
+    const focusable = popover.querySelectorAll('button, a[href]');
     if (!focusable.length) return;
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
@@ -333,6 +504,12 @@
       event.preventDefault();
       first.focus();
     }
+  }
+
+  function handlePopoverOutsideClick(event) {
+    const popover = document.getElementById('exp_popover');
+    if (popover.contains(event.target) || event.target.closest('.map_pin')) return;
+    closeExpPopover();
   }
 
   /* ------------------------------------------------------------------ */
@@ -465,12 +642,76 @@
   /* ------------------------------------------------------------------ */
 
   const magazineState = { items: [], activeIndex: 0 };
+  let magazineMobileSwiper = null;
+  const magazineMobileQuery = window.matchMedia('(max-width: 767px)');
 
   function initMagazineCarousel(items) {
     magazineState.items = items || [];
     magazineState.activeIndex = magazineState.items.length ? Math.min(2, magazineState.items.length - 1) : 0;
     renderMagazineCarousel();
+    renderMagazineMobileSlides();
   }
+
+  function magazineCardMarkup(item) {
+    return `
+      <div class="magazine_card_thumb"><img src="${item.thumbnail}" alt="" loading="lazy" /></div>
+      <div class="magazine_card_info">
+        <div class="magazine_card_info_top">
+          <h3 class="magazine_card_title">${escapeHtml(item.title)}</h3>
+          <div class="magazine_card_byline">
+            <p>글 : ${escapeHtml(item.writer)}</p>
+            <p>사진 : ${escapeHtml(item.photographer)}</p>
+          </div>
+        </div>
+        <p class="magazine_card_desc">${escapeHtml(item.description)}</p>
+        <p class="magazine_card_hashtags">${item.hashtags.map((tag) => `#${escapeHtml(tag)}`).join(' ')}</p>
+      </div>
+    `;
+  }
+
+  // Mobile-only Swiper "cards" effect stack — independent of the desktop coverflow's activeIndex/data-depth state.
+  function renderMagazineMobileSlides() {
+    const wrapper = document.getElementById('magazine_mobile_swiper_wrapper');
+    if (!wrapper) return;
+
+    destroyMagazineMobileSwiper();
+    wrapper.innerHTML = magazineState.items.map((item) => `
+      <div class="swiper-slide magazine_card">${magazineCardMarkup(item)}</div>
+    `).join('');
+
+    syncMagazineMobileSwiper();
+  }
+
+  function initMagazineMobileSwiper() {
+    if (magazineMobileSwiper || typeof Swiper === 'undefined') return;
+    const container = document.getElementById('magazine_mobile_swiper');
+    if (!container || !magazineState.items.length) return;
+
+    magazineMobileSwiper = new Swiper(container, {
+      effect: 'cards',
+      grabCursor: true,
+      loop: magazineState.items.length > 2,
+      cardsEffect: {
+        slideShadows: false,
+        perSlideOffset: 10,
+        perSlideRotate: 3
+      }
+    });
+  }
+
+  function destroyMagazineMobileSwiper() {
+    if (magazineMobileSwiper) {
+      magazineMobileSwiper.destroy(true, true);
+      magazineMobileSwiper = null;
+    }
+  }
+
+  function syncMagazineMobileSwiper() {
+    if (magazineMobileQuery.matches) initMagazineMobileSwiper();
+    else destroyMagazineMobileSwiper();
+  }
+
+  magazineMobileQuery.addEventListener('change', syncMagazineMobileSwiper);
 
   function renderMagazineCarousel() {
     const container = document.getElementById('magazine_grid');
@@ -485,22 +726,7 @@
     container.innerHTML = items.map((item, i) => {
       const depth = magazineState.activeIndex - i;
       const depthAttr = depth >= 0 && depth <= 2 ? ` data-depth="${depth}"` : '';
-      return `
-        <article class="magazine_card"${depthAttr}>
-          <div class="magazine_card_thumb"><img src="${item.thumbnail}" alt="" loading="lazy" /></div>
-          <div class="magazine_card_info">
-            <div class="magazine_card_info_top">
-              <h3 class="magazine_card_title">${escapeHtml(item.title)}</h3>
-              <div class="magazine_card_byline">
-                <p>글 : ${escapeHtml(item.writer)}</p>
-                <p>사진 : ${escapeHtml(item.photographer)}</p>
-              </div>
-            </div>
-            <p class="magazine_card_desc">${escapeHtml(item.description)}</p>
-            <p class="magazine_card_hashtags">${item.hashtags.map((tag) => `#${escapeHtml(tag)}`).join(' ')}</p>
-          </div>
-        </article>
-      `;
+      return `<article class="magazine_card"${depthAttr}>${magazineCardMarkup(item)}</article>`;
     }).join('');
 
     const prevBtn = document.getElementById('magazine_prev_btn');
@@ -603,23 +829,14 @@
   /* Search                                                               */
   /* ------------------------------------------------------------------ */
 
+  let recentSearches = [];
+
   function getRecentSearches() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEYS.RECENT_SEARCH);
-      return raw ? JSON.parse(raw) : [];
-    } catch (error) {
-      return [];
-    }
+    return recentSearches;
   }
 
   function addRecentSearch(query) {
-    try {
-      const list = getRecentSearches().filter((item) => item !== query);
-      list.unshift(query);
-      localStorage.setItem(STORAGE_KEYS.RECENT_SEARCH, JSON.stringify(list.slice(0, RECENT_SEARCH_MAX)));
-    } catch (error) {
-      /* localStorage unavailable: ignore silently */
-    }
+    recentSearches = [query, ...recentSearches.filter((item) => item !== query)].slice(0, RECENT_SEARCH_MAX);
   }
 
   function renderRecentSearches() {
@@ -867,6 +1084,137 @@
   }
 
   /* ------------------------------------------------------------------ */
+  /* Brand typography auto-fit (flush to both edges, never clips)        */
+  /* ------------------------------------------------------------------ */
+
+  // A vw-based font-size can only ever approximate the exact pixel width of "NATIONALGEOGRAPHIC",
+  // so it has to leave a safety margin or risk overflow. Measuring the real rendered width and
+  // solving for the font-size that makes it exactly match the container is the only way to get
+  // a flush, edge-to-edge fit that's still guaranteed not to clip.
+  function fitBrandTypo() {
+    const wrap = document.getElementById('brand_typo_wrap');
+    if (!wrap) return;
+    const sample = wrap.querySelector('.brand_typo_base');
+    const allText = wrap.querySelectorAll('.brand_typo');
+    if (!sample || !allText.length) return;
+
+    const referenceSize = 100;
+    sample.style.fontSize = `${referenceSize}px`;
+    // `.brand_typo` is CSS `width:100%`, so getBoundingClientRect() would just report the box's
+    // forced width regardless of the actual glyph width. scrollWidth still reports the true
+    // (possibly overflowing, since white-space:nowrap) content width, which is what we need here.
+    const naturalWidth = sample.scrollWidth;
+    const containerWidth = wrap.getBoundingClientRect().width;
+    if (!naturalWidth || !containerWidth) return;
+
+    const fitSize = (containerWidth / naturalWidth) * referenceSize;
+    allText.forEach((el) => { el.style.fontSize = `${fitSize}px`; });
+  }
+
+  function initBrandTypoFit() {
+    if (!document.getElementById('brand_typo_wrap')) return;
+    fitBrandTypo();
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(fitBrandTypo);
+    }
+
+    let resizeTimer = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(fitBrandTypo, 150);
+    });
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Mouse follower glow (desktop pointer devices only)                   */
+  /* ------------------------------------------------------------------ */
+
+  function initMouseGlow() {
+    const glow = document.getElementById('mouse_glow');
+    if (!glow) return;
+
+    const desktopQuery = window.matchMedia('(min-width: 1280px) and (hover: hover) and (pointer: fine)');
+    const hasGsap = typeof window.gsap !== 'undefined';
+
+    let active = false;
+    let rafId = null;
+    let moveX = null;
+    let moveY = null;
+    let lastHitTarget = null;
+    let targetX = window.innerWidth / 2;
+    let targetY = window.innerHeight / 2;
+    let currentX = targetX;
+    let currentY = targetY;
+
+    // Treat anything with an image/video surface (incl. CSS background-image cards) as "media" for the brighter screen-blend state.
+    const isMediaElement = (el) => {
+      let node = el;
+      for (let depth = 0; node instanceof Element && depth < 4; depth += 1) {
+        if (node.tagName === 'IMG' || node.tagName === 'VIDEO' || node.tagName === 'PICTURE') return true;
+        const bg = window.getComputedStyle(node).backgroundImage;
+        if (bg && bg !== 'none') return true;
+        node = node.parentElement;
+      }
+      return false;
+    };
+
+    function tick() {
+      currentX += (targetX - currentX) * 0.12;
+      currentY += (targetY - currentY) * 0.12;
+      glow.style.transform = `translate(${currentX}px, ${currentY}px) translate(-50%, -50%)`;
+      if (Math.abs(targetX - currentX) > 0.5 || Math.abs(targetY - currentY) > 0.5) {
+        rafId = requestAnimationFrame(tick);
+      } else {
+        rafId = null;
+      }
+    }
+
+    function handleMove(event) {
+      glow.classList.add('is_active');
+      if (event.target !== lastHitTarget) {
+        lastHitTarget = event.target;
+        glow.classList.toggle('is_over_media', isMediaElement(event.target));
+      }
+
+      if (hasGsap) {
+        moveX(event.clientX);
+        moveY(event.clientY);
+      } else {
+        targetX = event.clientX;
+        targetY = event.clientY;
+        if (!rafId) rafId = requestAnimationFrame(tick);
+      }
+    }
+
+    function enable() {
+      if (active || isReducedMotion()) return;
+      active = true;
+      if (hasGsap) {
+        gsap.set(glow, { xPercent: -50, yPercent: -50, x: window.innerWidth / 2, y: window.innerHeight / 2 });
+        moveX = gsap.quickTo(glow, 'x', { duration: 0.6, ease: 'power3' });
+        moveY = gsap.quickTo(glow, 'y', { duration: 0.6, ease: 'power3' });
+      }
+      document.addEventListener('pointermove', handleMove);
+    }
+
+    function disable() {
+      active = false;
+      glow.classList.remove('is_active', 'is_over_media');
+      document.removeEventListener('pointermove', handleMove);
+      if (hasGsap) gsap.killTweensOf(glow);
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = null;
+      moveX = null;
+      moveY = null;
+    }
+
+    const syncWithQuery = () => (desktopQuery.matches ? enable() : disable());
+    desktopQuery.addEventListener('change', syncWithQuery);
+    syncWithQuery();
+  }
+
+  /* ------------------------------------------------------------------ */
   /* Bootstrap                                                            */
   /* ------------------------------------------------------------------ */
 
@@ -879,7 +1227,7 @@
     addClickListener('search_toggle_btn', handleSearchToggle);
     addClickListener('search_close_btn', closeSearch);
     addClickListener('menu_toggle_btn', handleMenuToggle);
-    addClickListener('exp_modal_close_btn', closeExpModal);
+    addClickListener('exp_popover_close_btn', closeExpPopover);
     addClickListener('magazine_prev_btn', handleMagazinePrev);
     addClickListener('magazine_next_btn', handleMagazineNext);
 
@@ -889,21 +1237,20 @@
     const searchInput = document.getElementById('search_input');
     if (searchInput) searchInput.addEventListener('input', handleSearchInputChange);
 
-    const expModal = document.getElementById('exp_modal');
-    if (expModal) {
-      expModal.addEventListener('click', (event) => {
-        if (event.target.id === 'exp_modal') closeExpModal();
-      });
-    }
-
     initScrollTopButton();
     initBrandTypoGlow();
+    initBrandTypoFit();
+    initMouseGlow();
     initApp();
 
     let resizeTimer = null;
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(updateBannerPreviewPosition, 150);
+      resizeTimer = setTimeout(() => {
+        updateBannerPreviewPosition();
+        const popover = document.getElementById('exp_popover');
+        if (popover && !popover.hidden && activeExpPin) positionExpPopover(popover, activeExpPin);
+      }, 150);
     });
   });
 })();

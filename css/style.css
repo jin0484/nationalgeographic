@@ -1,4 +1,15 @@
 /* ==========================================================================
+   Web fonts
+   ========================================================================== */
+@font-face {
+  font-family: 'PyeongChang';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-02@1.0/PyeongChang-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ==========================================================================
    Reset
    ========================================================================== */
 *, *::before, *::after { box-sizing: border-box; }
@@ -23,6 +34,7 @@ body {
   font-size: 16px;
   line-height: 1.5;
   min-height: 100vh;
+  padding-top: var(--header_height);
 }
 
 h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
@@ -63,7 +75,7 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
   padding: 0 var(--space_2);
 }
 
-.section { padding: var(--space_5) 0; }
+.section { padding: var(--section_gap) 0; }
 
 .section_heading {
   font-size: 28px;
@@ -82,11 +94,12 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
    Header
    ========================================================================== */
 .header {
-  position: sticky;
-  top: 0;
+  position: fixed;
+  top: var(--header_top_gap);
+  left: 0;
+  right: 0;
+  width: 100%;
   z-index: 100;
-  background: var(--color_bg);
-  border-bottom: 1px solid var(--color_border);
 }
 
 .header_inner {
@@ -106,16 +119,17 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
   gap: var(--space_1);
   flex-shrink: 0;
 }
-.header_logo_text {
-  font-family: var(--font_heading);
-  font-size: 13px;
-  letter-spacing: 0.06em;
-  display: none;
-}
-
 .gnb { display: none; }
 
-.header_actions { display: flex; align-items: center; gap: var(--space_1); }
+.header_actions { display: flex; align-items: center; gap: var(--space_3); }
+
+.header_login_link {
+  display: none;
+  font-size: 14px;
+  color: var(--color_text_muted);
+  transition: color var(--transition_base);
+}
+.header_login_link:hover { color: var(--color_text); }
 
 .icon_btn {
   width: 40px; height: 40px;
@@ -140,12 +154,33 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
 
 /* Nav pill (shared by header GNB and search overlay) */
 .gnb_list {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 2px;
-  background: var(--color_bg_elevated);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius_pill);
   padding: 6px;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.12),
+    inset 1px 0 0 rgba(140, 190, 255, 0.06),
+    inset -1px 0 0 rgba(255, 170, 130, 0.06);
+}
+.gnb_list::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(-45deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0) 30%,
+    rgba(255, 255, 255, 0) 70%,
+    rgba(255, 255, 255, 0.06) 100%);
+  mix-blend-mode: overlay;
+  pointer-events: none;
 }
 .gnb_link {
   display: block;
@@ -156,7 +191,8 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
   transition: color var(--transition_base);
 }
 .gnb_link:hover { color: var(--color_text); }
-.gnb_link.is_featured { color: var(--color_text); font-weight: 700; }
+.gnb_link.is_featured { color: var(--color_text_muted); font-weight: 400; }
+.gnb_link.is_featured:hover { color: var(--color_text); }
 .gnb_link.is_active { color: var(--color_accent); }
 
 /* Search overlay (drops down, sized to its content) */
@@ -185,6 +221,8 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
 }
 
 .search_overlay_header {
+  max-width: var(--container_max);
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -235,6 +273,12 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
   color: var(--color_text);
 }
 .search_field_input::placeholder { color: var(--color_text_muted); }
+.search_field_input:focus,
+.search_field_input:focus-visible {
+  outline: none;
+  border: 0;
+  box-shadow: none;
+}
 .search_field_submit_btn {
   width: 32px; height: 32px;
   display: flex; align-items: center; justify-content: center;
@@ -259,7 +303,7 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
 
 .mobile_menu {
   position: sticky;
-  top: var(--header_height);
+  top: calc(var(--header_height) + var(--header_top_gap));
   z-index: 99;
   background: var(--color_bg);
   border-bottom: 1px solid var(--color_border);
@@ -271,12 +315,12 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
   color: var(--color_text_muted);
 }
 .mobile_menu_link.is_active { color: var(--color_accent); }
-.mobile_menu_link.is_featured { color: var(--color_text); font-weight: 700; }
+.mobile_menu_link.is_featured { color: var(--color_text_muted); font-weight: 400; }
 
 /* ==========================================================================
    Banner slider
    ========================================================================== */
-.banner_section { background: var(--color_bg); padding: var(--space_2); }
+.banner_section { background: var(--color_bg); padding: var(--space_2) 5%; }
 
 .banner_slider {
   position: relative;
@@ -287,67 +331,119 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
   touch-action: pan-y;
 }
 
+/* Layered 3D carousel: slides are stacked absolutely and positioned/scaled/faded via JS (GSAP) based on their distance from the active index, instead of a translateX track. */
 .banner_track {
-  display: flex;
+  position: relative;
+  z-index: 0; /* isolates the slides' own 1-10 z-index range so the active (z-index:10) slide can never outrank the arrows/dots/bottom-bar (z-index:5) */
+  width: 100%;
   height: 100%;
-  transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
-  will-change: transform;
 }
 
 .banner_slide {
-  position: relative;
-  flex: 0 0 100%;
+  position: absolute;
+  inset: 0;
+  width: 100%;
   height: 100%;
+  will-change: transform, opacity;
 }
 .banner_slide img {
   width: 100%; height: 100%;
   object-fit: cover;
   user-select: none;
   -webkit-user-drag: none;
+  display: block;
+}
+/* Title/description/CTA live in their own track (parallel to .banner_track) so on mobile they can flow
+   below the image instead of overlaying it; on tablet/desktop they're absolutely overlaid as before. */
+.banner_content_track {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
 }
 .banner_slide_overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(90deg, rgba(21,21,21,0.6) 0%, rgba(21,21,21,0.25) 40%, rgba(21,21,21,0) 65%),
               linear-gradient(0deg, rgba(21,21,21,0.55) 0%, rgba(21,21,21,0) 30%);
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: center;
   padding: var(--space_3);
+  padding-left: 200px;
+  pointer-events: none;
 }
+.banner_slide_overlay.is_active { display: flex; pointer-events: auto; }
 .banner_title {
-  font-size: 22px;
+  font-family: 'PyeongChang', var(--font_heading);
+  font-weight: 400;
+  font-size: 64px;
   line-height: 1.25;
   max-width: 14em;
+  opacity: 0;
+  transform: translateY(32px);
+  filter: blur(14px);
 }
 .banner_desc {
   color: var(--color_text_muted);
-  font-size: 14px;
+  font-size: 26px;
   line-height: 1.5;
   margin-top: var(--space_1);
   max-width: 24em;
+  opacity: 0;
+  transform: translateY(32px);
+  filter: blur(14px);
 }
 .banner_cta_btn {
+  position: relative;
   align-self: flex-start;
   display: inline-flex;
   align-items: center;
-  gap: var(--space_1);
+  justify-content: center;
+  gap: 10px;
   margin-top: var(--space_2);
-  padding: 10px 20px;
-  border-radius: var(--radius_pill);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  background: rgba(21, 21, 21, 0.35);
-  font-size: 14px;
-  font-weight: 700;
-  transition: background var(--transition_base), border-color var(--transition_base);
+  padding: 13px 30px;
+  border-radius: 50px;
+  overflow: hidden;
+  background: linear-gradient(to right, rgba(255, 240, 159, 0.3), rgba(255, 249, 219, 0.3));
+  /* Glass effect (Figma: 빛 -45°/80%, 굴절 80, 깊이 20, 분산 50, 흐릿함 4, Splay 30) approximated
+     with standard CSS: backdrop blur+refraction tint, an inset light/depth shadow, and a faint
+     chromatic-fringe edge for dispersion — Figma's glass material is a proprietary shader with no
+     direct CSS equivalent, so this is a tuned approximation rather than a literal port. */
+  backdrop-filter: blur(4px) saturate(1.35) contrast(1.12);
+  -webkit-backdrop-filter: blur(4px) saturate(1.35) contrast(1.12);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.65),
+    inset 0 -8px 14px rgba(0, 0, 0, 0.18),
+    inset 1px 0 0 rgba(140, 190, 255, 0.18),
+    inset -1px 0 0 rgba(255, 170, 130, 0.18),
+    0 6px 16px rgba(0, 0, 0, 0.2);
+  color: #f3f3f3;
+  font-size: 16px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background var(--transition_base);
+  opacity: 0;
+  transform: translateY(32px);
+  filter: blur(14px);
 }
-.banner_cta_btn:hover { background: rgba(21, 21, 21, 0.6); border-color: var(--color_accent); }
+.banner_cta_btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(-45deg,
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(255, 255, 255, 0) 30%,
+    rgba(255, 255, 255, 0) 65%,
+    rgba(255, 255, 255, 0.3) 100%);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+.banner_cta_btn:hover { background: linear-gradient(to right, rgba(255, 240, 159, 0.45), rgba(255, 249, 219, 0.45)); }
 .banner_cta_icon {
-  width: 22px; height: 22px;
-  display: flex; align-items: center; justify-content: center;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  font-size: 12px;
+  font-size: 21px;
+  line-height: 1;
+  color: #f3f3f3;
 }
 
 .banner_arrow {
@@ -365,6 +461,11 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
 .banner_arrow:hover { background: rgba(21, 21, 21, 0.85); }
 .banner_arrow_prev { left: var(--space_2); }
 .banner_arrow_next { right: var(--space_2); }
+
+/* Groups the dots + text/CTA so mobile can stack and anchor them together as one
+   bottom-of-photo plate; on tablet/desktop it's inert (`display: contents`) and each
+   child keeps its own independent absolute positioning as before. */
+.banner_bottom_overlay { display: contents; }
 
 .banner_dots {
   position: absolute;
@@ -392,54 +493,109 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
   display: none;
   align-items: center;
   justify-content: flex-end;
-  gap: var(--space_2);
 }
 
-.banner_mini_arrows { display: flex; gap: 8px; }
-.banner_mini_arrow {
-  width: 36px; height: 36px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  display: flex; align-items: center; justify-content: center;
-  background: rgba(21, 21, 21, 0.35);
+/* Positioned independently of the flex row: horizontally centered in the bar, bottom-aligned with the preview card. */
+.banner_mini_arrows {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
 }
-.banner_mini_arrow:hover { border-color: var(--color_accent); background: rgba(21, 21, 21, 0.6); }
+.banner_mini_arrow {
+  position: relative;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px) saturate(1.35) contrast(1.1);
+  -webkit-backdrop-filter: blur(16px) saturate(1.35) contrast(1.1);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.25),
+    inset 0 -4px 6px rgba(0, 0, 0, 0.18),
+    inset 1px 0 0 rgba(140, 190, 255, 0.15),
+    inset -1px 0 0 rgba(255, 170, 130, 0.15),
+    0 4px 12px rgba(0, 0, 0, 0.25);
+  transition: background var(--transition_base), border-color var(--transition_base);
+}
+.banner_mini_arrow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(-45deg,
+    rgba(255, 255, 255, 0.75) 0%,
+    rgba(255, 255, 255, 0) 35%,
+    rgba(255, 255, 255, 0) 65%,
+    rgba(255, 255, 255, 0.25) 100%);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+.banner_mini_arrow img { position: relative; filter: drop-shadow(0 0 6px rgba(255, 240, 159, 0.65)); }
+.banner_mini_arrow:hover { border-color: rgba(255, 240, 159, 0.6); background: rgba(255, 255, 255, 0.14); }
 
 .banner_preview_viewport {
-  width: 390px;
+  width: 520px;
+  margin-right: 200px;
   overflow: hidden;
 }
 .banner_preview_track {
   display: flex;
-  gap: var(--space_2);
+  gap: var(--space_4);
   transition: transform 0.5s ease;
 }
 .banner_preview_card {
-  flex: 0 0 340px;
+  position: relative;
+  flex: 0 0 453px;
   display: flex;
-  align-items: center;
-  gap: var(--space_2);
+  align-items: stretch;
+  gap: var(--space_3);
   text-align: left;
-  padding: var(--space_1);
+  padding: var(--space_2);
   border-radius: var(--radius);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(21, 21, 21, 0.55);
-  backdrop-filter: blur(8px);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px) saturate(1.3);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.15),
+    inset 1px 0 0 rgba(140, 190, 255, 0.08),
+    inset -1px 0 0 rgba(255, 170, 130, 0.08),
+    0 8px 20px rgba(0, 0, 0, 0.25);
 }
-.banner_preview_card.is_active { border-color: var(--color_accent); }
+.banner_preview_card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(-45deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0) 30%,
+    rgba(255, 255, 255, 0) 70%,
+    rgba(255, 255, 255, 0.08) 100%);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
 .banner_preview_thumb {
-  width: 88px; height: 88px;
+  width: 165px; height: 176px;
   flex-shrink: 0;
   border-radius: var(--radius_sm);
   overflow: hidden;
 }
 .banner_preview_thumb img { width: 100%; height: 100%; object-fit: cover; }
-.banner_preview_info { min-width: 0; }
-.banner_preview_title { font-size: 15px; font-weight: 700; }
+.banner_preview_info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+}
+.banner_preview_title { font-family: 'PyeongChang', var(--font_heading); font-size: 30px; font-weight: 400; }
 .banner_preview_desc {
-  font-size: 12px;
+  font-size: 20px;
   color: var(--color_text_muted);
-  margin-top: 4px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -453,36 +609,44 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: var(--space_4) 0;
+  padding-top: 70px;
+  padding-bottom: var(--section_gap);
+  padding-left: 0;
+  padding-right: 0;
   overflow: hidden;
 }
 
-.brand_typo_arrow { opacity: 0.5; margin-bottom: var(--space_3); }
+.brand_typo_arrow { opacity: 0.5; margin-bottom: 130px; }
 
 .brand_typo_wrap {
   display: grid;
   width: 100%;
+  max-width: 100%;
+  filter: blur(5px);
+  transition: filter 0.6s ease;
 }
+.brand_typo_wrap.is_hovering { filter: blur(0); }
 
 .brand_typo {
   grid-area: 1 / 1;
   width: 100%;
   text-align: center;
   font-family: var(--font_heading);
-  font-weight: 800;
-  font-size: clamp(32px, 13vw, 260px);
-  line-height: 1;
-  letter-spacing: -0.02em;
+  font-style: normal;
+  font-weight: 700;
+  font-size: clamp(32px, 8vw, 240px);
+  line-height: 1.1;
+  letter-spacing: 3px;
   white-space: nowrap;
   user-select: none;
 }
 
-.brand_typo_base { color: #232323; }
+.brand_typo_base { color: #282828; }
 
 .brand_typo_glow {
   color: transparent;
   background: radial-gradient(circle 260px at var(--spot-x, 50%) var(--spot-y, 50%),
-    var(--color_accent) 0%, rgba(255, 206, 0, 0.25) 40%, rgba(255, 206, 0, 0) 70%);
+    #FFE680 0%, rgba(255, 230, 128, 0.25) 40%, rgba(255, 230, 128, 0) 70%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -495,14 +659,13 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
 /* ==========================================================================
    Today's Exp map
    ========================================================================== */
+.todays_exp_section { background: #232323; }
+
 .todays_exp_map {
   position: relative;
   width: 100%;
-  border-radius: var(--radius);
-  overflow: hidden;
-  background: var(--color_bg_elevated);
 }
-.map_image { width: 100%; height: auto; opacity: 0.9; }
+.map_image { width: 100%; height: auto; opacity: 1; }
 .map_pin_layer { position: absolute; inset: 0; }
 
 .map_pin {
@@ -543,15 +706,7 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
 /* ==========================================================================
    Quiz
    ========================================================================== */
-.quiz_section { position: relative; overflow: hidden; }
-.quiz_bg_image {
-  position: absolute;
-  inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-  opacity: 0.22;
-}
-.quiz_inner { position: relative; z-index: 1; }
+.quiz_section { margin: var(--section_gap_quiz_extra) 0; }
 
 .quiz_card {
   background: var(--color_bg_elevated);
@@ -559,6 +714,7 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
   border-radius: var(--radius);
   padding: var(--space_3);
   max-width: 640px;
+  margin: 0 auto;
 }
 
 .quiz_progress { font-size: 13px; color: var(--color_accent); font-weight: 700; margin-bottom: var(--space_1); }
@@ -671,6 +827,90 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
   margin-top: var(--space_2);
   font-size: 13px;
   color: #5a5640;
+}
+
+/* Mobile-only Swiper "cards" stack. Hidden by default; swapped in for the coverflow
+   track below the tablet breakpoint (desktop/tablet layout above is untouched). */
+.magazine_mobile_swiper { display: none; }
+
+@media (max-width: 767px) {
+  /* Banner: image on top (own box), dots below it, title/desc/CTA overlaid on the photo's bottom edge — no peeking side slides. */
+  .banner_slider { aspect-ratio: auto; }
+  .banner_track { height: auto; }
+  .banner_slide { position: static; inset: auto; height: auto; }
+  .banner_slide:not(.is_active) { display: none; }
+  .banner_slide img { height: auto; aspect-ratio: 4 / 5; }
+
+  /* Dots + text/CTA share one bottom-anchored plate over the photo (translucent blurred
+     black, per Figma node 2798:303) so the plate's own box — not the flow of its
+     children — defines what's clipped by the slider's rounded corners; keeping dots
+     as a separate flow sibling here previously let the plate's `bottom: 0` anchor to
+     the dots' box instead of the photo's, cutting the dots off against the overflow. */
+  .banner_bottom_overlay {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  .banner_dots {
+    position: static;
+    justify-content: center;
+    margin: var(--space_2) 0 0;
+  }
+
+  .banner_content_track { position: static; inset: auto; z-index: auto; pointer-events: auto; }
+  .banner_slide_overlay {
+    position: static;
+    inset: auto;
+    display: none;
+    background: none;
+    padding: var(--space_3) var(--space_2) var(--space_2);
+  }
+  .banner_slide_overlay.is_active { display: flex; }
+
+  .magazine_carousel { display: none; }
+
+  .magazine_mobile_swiper {
+    display: block;
+    width: 100%;
+    max-width: 320px;
+    margin: 40px auto 0;
+    aspect-ratio: 3 / 4;
+  }
+  .magazine_mobile_swiper .magazine_card {
+    width: 100%;
+    height: 100%;
+    cursor: grab;
+    position: relative;
+  }
+  /* Photo fills the whole card; the info plate stays collapsed over its bottom edge
+     until the card is hovered, then rises into view. */
+  .magazine_mobile_swiper .magazine_card_thumb {
+    position: absolute;
+    inset: 0;
+    aspect-ratio: auto;
+  }
+  .magazine_mobile_swiper .magazine_card_info {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding-top: 0;
+    padding-bottom: 0;
+    transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.4s ease;
+  }
+  .magazine_mobile_swiper .magazine_card:hover .magazine_card_info {
+    max-height: 260px;
+    opacity: 1;
+    padding-top: var(--space_3);
+    padding-bottom: var(--space_3);
+  }
 }
 
 /* ==========================================================================
@@ -804,7 +1044,7 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
   justify-content: space-between;
   gap: var(--space_2);
 }
-.recommend_panel_title { font-size: 20px; }
+.recommend_panel_title { font-family: 'PyeongChang', var(--font_heading); font-weight: 400; font-size: 20px; }
 .recommend_panel_info_header .bookmark_btn { position: static; flex-shrink: 0; }
 
 /* Mobile/tablet expanded view: title + bookmark + hashtags only */
@@ -894,58 +1134,93 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
 .state_message.has_error { color: var(--color_error); border-color: var(--color_error); }
 
 /* ==========================================================================
-   Modal (Today's Exp)
+   Today's Exp popover
    ========================================================================== */
-.modal_overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  z-index: 200;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
+.exp_popover {
+  position: absolute;
+  z-index: 20;
+  width: 300px;
+  max-width: calc(100% - 24px);
+  background: var(--color_bg_elevated_2);
+  border: 1px solid var(--color_border);
+  border-radius: var(--radius);
+  padding: var(--space_1);
+  box-shadow: 0 24px 48px -16px rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
-.modal_overlay[hidden] { display: none; }
-
-.modal_dialog {
-  background: var(--color_bg_elevated);
-  width: 100%;
-  max-width: 560px;
-  max-height: 85vh;
-  overflow-y: auto;
-  border-radius: var(--radius) var(--radius) 0 0;
-  padding: var(--space_3);
+.exp_popover[hidden] { display: none; }
+.exp_popover.is_open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+@media (prefers-reduced-motion: reduce) {
+  .exp_popover { transition: none; }
 }
 
-.modal_header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space_2); }
-.modal_title { font-size: 20px; }
-.modal_close_btn {
-  width: 32px; height: 32px;
+.exp_popover_close_btn {
+  position: absolute;
+  top: 14px; right: 14px;
+  z-index: 2;
+  width: 26px; height: 26px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 22px;
+  font-size: 16px;
+  color: #ffffff;
+  background: rgba(21, 21, 21, 0.55);
   border-radius: 50%;
 }
-.modal_close_btn:hover { background: var(--color_bg); }
+.exp_popover_close_btn:hover { background: rgba(21, 21, 21, 0.8); }
 
-.modal_video_list { display: grid; gap: var(--space_2); }
-.modal_video_card {
-  display: grid;
-  grid-template-columns: 96px 1fr;
-  gap: var(--space_2);
-  text-align: left;
-  padding: var(--space_1);
-  border-radius: var(--radius_sm);
-}
-.modal_video_card:hover { background: var(--color_bg); }
-.modal_video_thumb {
+.exp_popover_thumb {
   position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: var(--radius_sm);
   overflow: hidden;
-  aspect-ratio: 4 / 3;
 }
-.modal_video_thumb img { width: 100%; height: 100%; object-fit: cover; }
-.modal_video_thumb .card_play_badge { width: 32px; height: 32px; }
-.modal_video_thumb .card_play_badge::after { border-width: 6px 0 6px 10px; }
+.exp_popover_thumb img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block; }
+.exp_popover_thumb .card_play_badge { width: 44px; height: 44px; }
+
+.exp_popover_body { padding: var(--space_2) var(--space_1) var(--space_1); }
+.exp_popover_heading {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: var(--space_1);
+}
+.exp_popover_title { font-size: 18px; }
+.exp_popover_tag {
+  font-size: 12px;
+  font-weight: 700;
+  color: #151515;
+  background: var(--color_accent);
+  padding: 3px 12px;
+  border-radius: var(--radius_pill);
+}
+.exp_popover_desc {
+  font-size: 13px;
+  color: var(--color_text_muted);
+  line-height: 1.55;
+  margin-bottom: var(--space_2);
+}
+.exp_popover_cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #7d7350;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 6px 6px 6px 18px;
+  border-radius: var(--radius_pill);
+  transition: background var(--transition_base);
+}
+.exp_popover_cta:hover { background: #948866; }
+.exp_popover_cta_icon {
+  width: 26px; height: 26px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
 
 /* ==========================================================================
    Toast
@@ -984,64 +1259,86 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
 /* ==========================================================================
    Footer
    ========================================================================== */
-.footer { position: relative; overflow: hidden; margin-top: var(--space_5); }
-.footer_bg_image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.25; }
+.footer {
+  position: relative;
+  overflow: hidden;
+  margin-top: var(--section_gap);
+  aspect-ratio: 3 / 4;
+}
+.footer_bg_image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .footer_inner {
   position: relative;
   z-index: 1;
+  height: 100%;
   max-width: var(--container_max);
   margin: 0 auto;
-  padding: var(--space_5) var(--space_2) var(--space_3);
+  padding: var(--space_4) var(--space_2);
   display: flex;
   flex-direction: column;
-  gap: var(--space_4);
+  justify-content: flex-start;
+  gap: var(--space_5);
 }
-.footer_brand { display: flex; flex-direction: column; gap: var(--space_1); max-width: 420px; }
-.footer_brand_desc { color: var(--color_text_muted); font-size: 14px; }
-.footer_links { display: flex; flex-direction: column; gap: var(--space_3); }
-.footer_col_title { font-size: 14px; color: var(--color_text_muted); margin-bottom: var(--space_1); }
-.footer_col ul { display: flex; flex-direction: column; gap: 6px; }
-.footer_col a { font-size: 14px; color: var(--color_text); }
-.footer_col a:hover { color: var(--color_accent); }
-.footer_copyright {
-  position: relative; z-index: 1;
-  text-align: center;
+.footer_top { display: flex; flex-direction: column; gap: var(--space_1); }
+.footer_logo_text {
+  font-family: var(--font_heading);
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: -0.01em;
+  color: rgba(255, 255, 255, 0.85);
+}
+.footer_tagline {
   font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.3);
+  max-width: 22em;
+}
+.footer_bottom { display: flex; flex-direction: column; gap: var(--space_3); }
+.footer_contact_list { display: flex; flex-wrap: wrap; gap: var(--space_3) var(--space_4); }
+.footer_contact_item { display: flex; flex-direction: column; gap: 4px; }
+.footer_contact_label { font-size: 12px; color: var(--color_text_muted); }
+.footer_contact_value { font-size: 12px; color: var(--color_text_muted); }
+.footer_contact_value:hover { color: var(--color_accent); }
+.footer_copyright {
+  font-size: 11px;
+  line-height: 1.6;
   color: var(--color_text_muted);
-  padding: var(--space_2);
-  border-top: 1px solid var(--color_border);
 }
 
 /* ==========================================================================
    Tablet: 768px+
    ========================================================================== */
 @media (min-width: 768px) {
-  .header_logo_text { display: block; }
-  .gnb { display: block; }
+  :root { --section_gap: 150px; --section_gap_quiz_extra: 60px; }
+
+  .header_inner { display: grid; grid-template-columns: auto 1fr auto; }
+  .gnb { display: block; justify-self: center; }
+  .header_actions { justify-self: end; }
+  .header_login_link { display: block; }
   .mobile_menu, #menu_toggle_btn { display: none; }
 
   .banner_slider { aspect-ratio: 16 / 9; }
   .banner_arrow { display: flex; }
-  .banner_title { font-size: 28px; }
+  .banner_title { font-size: 64px; }
 
   .quiz_actions { flex-wrap: nowrap; }
 
-  .modal_overlay { align-items: center; }
-  .modal_dialog { border-radius: var(--radius); }
-
-  .footer_links { flex-direction: row; justify-content: space-between; }
+  .footer { aspect-ratio: 16 / 9; }
+  .footer_logo_text { font-size: 40px; }
+  .footer_tagline { font-size: 14px; }
 }
 
 /* ==========================================================================
    Desktop: 1280px+
    ========================================================================== */
 @media (min-width: 1280px) {
-  :root { --header_height: 80px; }
+  :root { --header_height: 80px; --section_gap: 220px; --section_gap_quiz_extra: 100px; }
 
-  .banner_section { padding: var(--space_3) var(--space_4); }
+  .banner_section { padding: var(--space_3) 5%; }
   .banner_slider { aspect-ratio: 21 / 9; }
-  .banner_title { font-size: 36px; }
-  .banner_desc { font-size: 15px; }
+  .banner_title { font-size: 64px; }
+  .banner_desc { font-size: 26px; }
 
   .banner_arrow, .banner_dots { display: none; }
   .banner_bottom_bar { display: flex; }
@@ -1150,7 +1447,7 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
     display: flex;
     flex-direction: column;
     justify-content: center;
-    overflow-y: auto;
+    overflow: hidden;
     padding: var(--space_4);
   }
   .recommend_panel.is_active .recommend_panel_title { font-size: 26px; }
@@ -1175,6 +1472,13 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
   .recommend_panel_rating { display: flex; gap: 2px; margin-top: var(--space_2); }
   .recommend_panel_more_btn { display: inline-block; }
   .recommend_panel_footer { margin-top: var(--space_3); }
+
+  .footer { aspect-ratio: 21 / 9; }
+  .footer_inner { padding: var(--space_5) var(--space_4); }
+  .footer_logo_text { font-size: 52px; }
+  .footer_tagline { font-size: 15px; }
+  .footer_bottom { flex-direction: row; align-items: flex-end; justify-content: space-between; gap: var(--space_4); }
+  .footer_copyright { max-width: 420px; text-align: right; flex-shrink: 0; }
 }
 
 /* ==========================================================================
@@ -1191,6 +1495,37 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
 }
 
 /* ==========================================================================
+   Mouse follower glow (desktop only, pointer-events:none so it never blocks clicks/hover)
+   ========================================================================== */
+.mouse_glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(255, 206, 0, 0.24) 0%, rgba(255, 206, 0, 0.1) 45%, rgba(255, 206, 0, 0) 70%);
+  filter: blur(30px);
+  transition: opacity 0.35s ease, filter 0.35s ease;
+  will-change: transform;
+}
+.mouse_glow.is_active { opacity: 0.85; }
+/* Slightly brighter/more visible over images and media surfaces (toggled in JS via a target hit-test) */
+.mouse_glow.is_over_media {
+  opacity: 1;
+  mix-blend-mode: screen;
+  filter: blur(26px) brightness(1.2);
+}
+
+@media (max-width: 1279px), (hover: none), (pointer: coarse) {
+  .mouse_glow { display: none; }
+}
+
+/* ==========================================================================
    Reduced motion
    ========================================================================== */
 @media (prefers-reduced-motion: reduce) {
@@ -1200,4 +1535,5 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
+  .mouse_glow { display: none !important; }
 }

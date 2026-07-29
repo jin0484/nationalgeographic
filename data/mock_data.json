@@ -48,14 +48,16 @@
           "category": "역사",
           "title": "수단 피라미드가 품은 미라의 비밀",
           "date": "2026.05.14",
-          "thumbnail": "images/magazine3.png"
+          "thumbnail": "images/magazine3.png",
+          "description": "메로에의 모래 언덕 아래, 3천 년의 시간을 견뎌낸 왕족의 미라가 발굴됐다. 고대 쿠시 왕국의 마지막 비밀을 들려준다."
         },
         {
           "id": "africa_02",
           "category": "동물",
           "title": "사바나의 어린 사자들",
           "date": "2026.06.02",
-          "thumbnail": "images/recommend2.png"
+          "thumbnail": "images/recommend2.png",
+          "description": "사바나의 어린 사자 무리가 처음으로 사냥을 배우며 무리의 규칙을 익혀가는 성장의 나날들을 기록했다."
         }
       ]
     },
@@ -69,14 +71,16 @@
           "category": "여행",
           "title": "몽골 초원, 무지개 아래에서",
           "date": "2026.04.21",
-          "thumbnail": "images/banner1.png"
+          "thumbnail": "images/banner1.png",
+          "description": "유목민 가족과 함께한 몽골 초원 횡단기. 소나기 뒤 초원을 가로지른 무지개 아래에서 유목의 삶을 마주한다."
         },
         {
           "id": "asia_02",
           "category": "동물",
           "title": "밀림 속 초록빛 눈동자",
           "date": "2026.03.30",
-          "thumbnail": "images/magazine2.png"
+          "thumbnail": "images/magazine2.png",
+          "description": "동남아시아 우림에 서식하는 대나무살모사의 눈동자를 초근접 촬영했다. 진화가 빚어낸 정교한 사냥 도구를 담았다."
         }
       ]
     },
@@ -90,14 +94,16 @@
           "category": "여행",
           "title": "알래스카, 부자의 낚시 여행",
           "date": "2026.07.02",
-          "thumbnail": "images/map2.png"
+          "thumbnail": "images/map2.png",
+          "description": "포트 프로텍션의 주민들이 알래스카의 변덕스러운 기후에 맞선 도전의 나날들을 보낸다."
         },
         {
           "id": "na_02",
           "category": "사진",
           "title": "도시의 속도, 뉴욕 스트리트 라이더",
           "date": "2026.02.18",
-          "thumbnail": "images/magazine1.png"
+          "thumbnail": "images/magazine1.png",
+          "description": "한계에 도전하는 자전거 라이더들이 어떻게 뉴욕시의 거리를 다시 점령했는지 한 사진작가의 렌즈로 살펴본다."
         }
       ]
     },
@@ -111,14 +117,16 @@
           "category": "자연",
           "title": "아마존, 카누가 멈춘 자리",
           "date": "2026.01.27",
-          "thumbnail": "images/quiz.png"
+          "thumbnail": "images/quiz.png",
+          "description": "우기가 끝난 아마존 지류를 따라 카누로 거슬러 오르며 만난 원시림의 소리와 정적을 기록했다."
         },
         {
           "id": "sa_02",
           "category": "동물",
           "title": "태평양의 혹등고래",
           "date": "2026.06.09",
-          "thumbnail": "images/banner4.png"
+          "thumbnail": "images/banner4.png",
+          "description": "매년 남태평양을 회유하는 혹등고래 무리를 따라가며 그들의 노랫소리와 이동 경로를 추적했다."
         }
       ]
     },
@@ -132,14 +140,16 @@
           "category": "컬처",
           "title": "미슐랭 셰프의 부엌",
           "date": "2026.05.30",
-          "thumbnail": "images/map3_video.png"
+          "thumbnail": "images/map3_video.png",
+          "description": "별 하나를 지키기 위해 매일 새벽을 여는 셰프의 부엌. 한 접시가 완성되기까지의 치열한 과정을 담았다."
         },
         {
           "id": "eu_02",
           "category": "동물",
           "title": "심해에서 만난 낯선 얼굴",
           "date": "2026.03.11",
-          "thumbnail": "images/recommend3.png"
+          "thumbnail": "images/recommend3.png",
+          "description": "빛이 닿지 않는 심해에서 포착된 낯선 생명체들. 극한 환경이 빚어낸 기이한 생김새를 들여다본다."
         }
       ]
     },
@@ -153,14 +163,16 @@
           "category": "동물",
           "title": "황제펭귄, 얼음 위의 첫걸음",
           "date": "2026.07.14",
-          "thumbnail": "images/recommend1.png"
+          "thumbnail": "images/recommend1.png",
+          "description": "부화한 지 얼마 안 된 황제펭귄 새끼가 살을 에는 남극의 얼음 위에서 첫걸음을 떼는 순간을 포착했다."
         },
         {
           "id": "oc_02",
           "category": "동물",
           "title": "태평양의 혹등고래",
           "date": "2026.06.09",
-          "thumbnail": "images/banner4.png"
+          "thumbnail": "images/banner4.png",
+          "description": "오세아니아 연안을 지나는 혹등고래 무리의 웅장한 도약을 드론과 수중 카메라로 함께 담았다."
         }
       ]
     }

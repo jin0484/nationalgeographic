@@ -22,10 +22,17 @@
   --space_4: 32px;
   --space_5: 64px;
 
+  /* Vertical gap between major page sections (responsive; see tablet/desktop overrides) */
+  --section_gap: 100px;
+  /* Extra margin added around the Quiz section only, on top of --section_gap */
+  --section_gap_quiz_extra: 40px;
+
   --font_heading: "Gmarket Sans TTF", "Pretendard Variable", Pretendard, -apple-system, sans-serif;
   --font_body: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, sans-serif;
 
   --container_max: 1280px;
   --header_height: 64px;
+  /* Nudges the fixed header down into the dark space it already shares with the banner section's own top padding, without moving the banner itself */
+  --header_top_gap: 12px;
   --transition_base: 0.25s ease;
 }
