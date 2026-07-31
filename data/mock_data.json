@@ -6,7 +6,7 @@
       "imageMobile": "images/m_banner1.png",
       "category": "여행",
       "title": "블링크",
-      "description": "시각장애를 선고받은 아이들이 세상의 아름다움을 경험하기 위해 떠나는 여행",
+      "description": "시각장애를 선고받은 아이들이\n세상의 아름다움을 경험하기 위해 떠나는 여행",
       "link": "#"
     },
     {
@@ -14,8 +14,8 @@
       "image": "images/banner2.png",
       "imageMobile": "images/m_banner2.png",
       "category": "과학",
-      "title": "우주로 향하는 시선",
-      "description": "헬멧 너머로 담아낸 우주비행사의 마지막 점검",
+      "title": "지구, 경이로운 행성",
+      "description": "윌 스미스가 알려주는 지구의 비밀",
       "link": "#"
     },
     {
@@ -23,8 +23,8 @@
       "image": "images/banner3.png",
       "imageMobile": "images/m_banner3.png",
       "category": "인물",
-      "title": "최초의 여성 우주비행사, 샐리 라이드",
-      "description": "우주로 향하는 문을 연 사람들의 이야기",
+      "title": "샐리",
+      "description": "미국에서 최초로 여성 우주비행사가 된\n'샐리 라이드'의 숨겨진 이야기",
       "link": "#"
     },
     {
@@ -32,8 +32,8 @@
       "image": "images/banner4.png",
       "imageMobile": "images/m_banner4.png",
       "category": "동물",
-      "title": "태평양의 혹등고래",
-      "description": "수면 위로 솟아오른 거대한 몸짓이 전하는 메시지",
+      "title": "고래의 비밀",
+      "description": "단순한 동물 그 이상의 생명체인\n고래들의 세계를 파헤치는 다큐멘터리",
       "link": "#"
     }
   ],

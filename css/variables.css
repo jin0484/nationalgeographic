@@ -25,7 +25,7 @@
   /* Vertical gap between major page sections (responsive; see tablet/desktop overrides) */
   --section_gap: 100px;
   /* Extra margin added around the Quiz section only, on top of --section_gap */
-  --section_gap_quiz_extra: 40px;
+  --section_gap_quiz_extra: 0px;
 
   --font_heading: "Gmarket Sans TTF", "Pretendard Variable", Pretendard, -apple-system, sans-serif;
   --font_body: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, sans-serif;

@@ -173,7 +173,7 @@
     const slides = Array.from(document.querySelectorAll('#banner_track .banner_slide'));
     const contents = Array.from(document.querySelectorAll('#banner_content_track .banner_slide_overlay'));
     const total = slides.length;
-    const duration = animate ? 1.1 : 0;
+    const duration = animate ? 0.9 : 0;
 
     slides.forEach((slide, i) => {
       const rel = getRelativeOffset(i, currentBannerIndex, total);
@@ -197,12 +197,12 @@
           gsap.set(slide, { xPercent, scale, opacity, zIndex });
         } else {
           gsap.set(slide, { zIndex });
-          gsap.to(slide, { xPercent, scale, opacity, duration, ease: 'power3.inOut' });
+          gsap.to(slide, { xPercent, scale, opacity, duration, ease: 'expo.out' });
         }
       } else {
         slide.style.zIndex = String(zIndex);
         slide.style.transition = animate
-          ? 'transform 1.1s cubic-bezier(0.65, 0, 0.35, 1), opacity 1.1s ease'
+          ? 'transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.9s ease'
           : 'none';
         slide.style.transform = `translateX(${xPercent}%) scale(${scale})`;
         slide.style.opacity = String(opacity);
@@ -422,7 +422,10 @@
       <button type="button" class="map_pin" data-region-id="${region.id}"
         data-label="${escapeHtml(region.name)}"
         style="left:${region.coords.x}%; top:${region.coords.y}%;"
-        aria-label="${escapeHtml(region.name)} 지역 추천 콘텐츠 보기"></button>
+        aria-label="${escapeHtml(region.name)} 지역 추천 콘텐츠 보기">
+        <span class="map_pin_shape" aria-hidden="true"></span>
+        <span class="map_pin_dot" aria-hidden="true"></span>
+      </button>
     `).join('');
 
     layer.querySelectorAll('.map_pin').forEach((pin) => {
@@ -723,28 +726,50 @@
       return;
     }
 
-    container.innerHTML = items.map((item, i) => {
+    container.innerHTML = items.map((item) => `<article class="magazine_card">${magazineCardMarkup(item)}</article>`).join('');
+
+    updateMagazineDepths();
+  }
+
+  // Updates data-depth on the existing cards instead of rebuilding the DOM, so the
+  // CSS transition on .magazine_card can actually animate between positions.
+  function updateMagazineDepths() {
+    const container = document.getElementById('magazine_grid');
+    if (!container) return;
+    const items = magazineState.items;
+
+    container.querySelectorAll('.magazine_card').forEach((card, i) => {
       const depth = magazineState.activeIndex - i;
-      const depthAttr = depth >= 0 && depth <= 2 ? ` data-depth="${depth}"` : '';
-      return `<article class="magazine_card"${depthAttr}>${magazineCardMarkup(item)}</article>`;
-    }).join('');
+      if (depth >= 0 && depth <= 2) {
+        card.setAttribute('data-depth', String(depth));
+      } else {
+        card.removeAttribute('data-depth');
+      }
+    });
 
     const prevBtn = document.getElementById('magazine_prev_btn');
     const nextBtn = document.getElementById('magazine_next_btn');
+    const activeItem = items[magazineState.activeIndex];
     if (prevBtn) prevBtn.disabled = magazineState.activeIndex <= 0;
-    if (nextBtn) nextBtn.disabled = magazineState.activeIndex >= items.length - 1;
+    if (nextBtn) {
+      nextBtn.disabled = magazineState.activeIndex >= items.length - 1
+        || (activeItem && activeItem.id === 'mag_bike');
+    }
   }
 
   function handleMagazinePrev() {
     if (magazineState.activeIndex <= 0) return;
     magazineState.activeIndex -= 1;
-    renderMagazineCarousel();
+    updateMagazineDepths();
   }
 
   function handleMagazineNext() {
-    if (magazineState.activeIndex >= magazineState.items.length - 1) return;
+    const items = magazineState.items;
+    const activeItem = items[magazineState.activeIndex];
+    if (magazineState.activeIndex >= items.length - 1) return;
+    if (activeItem && activeItem.id === 'mag_bike') return;
     magazineState.activeIndex += 1;
-    renderMagazineCarousel();
+    updateMagazineDepths();
   }
 
   function handleBookmarkToggle(btn) {
@@ -814,14 +839,24 @@
     }).join('');
 
     container.querySelectorAll('.recommend_panel_expand_btn').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        recommendState.activeIndex = Number(btn.dataset.index);
-        renderRecommendAccordion();
-      });
+      btn.addEventListener('click', () => setActivePanel(Number(btn.dataset.index)));
     });
 
     container.querySelectorAll('.bookmark_btn').forEach((btn) => {
       btn.addEventListener('click', () => handleBookmarkToggle(btn));
+    });
+  }
+
+  function setActivePanel(index) {
+    recommendState.activeIndex = index;
+    const container = document.getElementById('recommend_grid');
+    if (!container) return;
+
+    container.querySelectorAll('.recommend_panel').forEach((panel, i) => {
+      const isActive = i === index;
+      panel.classList.toggle('is_active', isActive);
+      const btn = panel.querySelector('.recommend_panel_expand_btn');
+      if (btn) btn.setAttribute('aria-expanded', String(isActive));
     });
   }
 
@@ -984,13 +1019,78 @@
   /* Header: mobile menu                                                 */
   /* ------------------------------------------------------------------ */
 
-  function handleMenuToggle() {
+  let lastFocusedBeforeMobileMenu = null;
+
+  function openMobileMenu() {
     const menu = document.getElementById('mobile_menu');
     const btn = document.getElementById('menu_toggle_btn');
-    const isOpen = menu.hidden;
-    menu.hidden = !isOpen;
-    btn.classList.toggle('is_active', isOpen);
-    btn.setAttribute('aria-expanded', String(isOpen));
+    if (!menu || !btn) return;
+
+    lastFocusedBeforeMobileMenu = document.activeElement;
+    menu.hidden = false;
+    document.body.style.overflow = 'hidden';
+    btn.classList.add('is_active');
+    btn.setAttribute('aria-expanded', 'true');
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => menu.classList.add('is_open'));
+    });
+
+    document.getElementById('mobile_menu_close_btn').focus();
+    document.addEventListener('keydown', handleMobileMenuKeydown);
+  }
+
+  function closeMobileMenu() {
+    const menu = document.getElementById('mobile_menu');
+    const btn = document.getElementById('menu_toggle_btn');
+    if (!menu || !btn) return;
+
+    menu.classList.remove('is_open');
+    document.body.style.overflow = '';
+    btn.classList.remove('is_active');
+    btn.setAttribute('aria-expanded', 'false');
+    document.removeEventListener('keydown', handleMobileMenuKeydown);
+    if (lastFocusedBeforeMobileMenu) lastFocusedBeforeMobileMenu.focus();
+
+    const finishClose = (event) => {
+      if (event && event.target !== menu.querySelector('.mobile_menu_panel')) return;
+      menu.hidden = true;
+      menu.removeEventListener('transitionend', finishClose);
+    };
+    menu.addEventListener('transitionend', finishClose);
+    window.setTimeout(finishClose, 650);
+  }
+
+  function handleMenuToggle() {
+    const menu = document.getElementById('mobile_menu');
+    if (menu && menu.hidden) {
+      openMobileMenu();
+    } else {
+      closeMobileMenu();
+    }
+  }
+
+  function handleMobileMenuKeydown(event) {
+    if (event.key === 'Escape') {
+      closeMobileMenu();
+      return;
+    }
+    if (event.key !== 'Tab') return;
+
+    const panel = document.querySelector('#mobile_menu .mobile_menu_panel');
+    if (!panel) return;
+    const focusable = panel.querySelectorAll('button, a[href]');
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
   }
 
   /* ------------------------------------------------------------------ */
@@ -1018,6 +1118,77 @@
     revealEls.forEach((el) => observer.observe(el));
   }
 
+  /* ------------------------------------------------------------------ */
+  /* Smooth mouse-wheel scroll                                           */
+  /* ------------------------------------------------------------------ */
+
+  function initSmoothWheelScroll() {
+    if (isReducedMotion()) return;
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+    const EASE = 0.12;
+    const SNAP_THRESHOLD = 0.5;
+    let currentY = window.scrollY;
+    let targetY = window.scrollY;
+    let rafId = null;
+    let syncingScroll = false;
+
+    const maxScroll = () => Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+
+    // Nested scrollable panels (search overlay, expanded magazine card text, etc.) should keep
+    // their own native wheel scrolling instead of being hijacked by the page-level smoothing.
+    function hasNativeScrollTarget(node, deltaY) {
+      let el = node;
+      while (el && el !== document.documentElement) {
+        if (el.nodeType === 1) {
+          const style = window.getComputedStyle(el);
+          const canScrollY = (style.overflowY === 'auto' || style.overflowY === 'scroll') && el.scrollHeight > el.clientHeight;
+          if (canScrollY) {
+            const atTop = el.scrollTop <= 0;
+            const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 1;
+            if ((deltaY < 0 && !atTop) || (deltaY > 0 && !atBottom)) return true;
+          }
+        }
+        el = el.parentElement;
+      }
+      return false;
+    }
+
+    function step() {
+      currentY += (targetY - currentY) * EASE;
+      if (Math.abs(targetY - currentY) < SNAP_THRESHOLD) {
+        currentY = targetY;
+        rafId = null;
+      } else {
+        rafId = requestAnimationFrame(step);
+      }
+      syncingScroll = true;
+      window.scrollTo(0, currentY);
+      syncingScroll = false;
+    }
+
+    window.addEventListener('wheel', (event) => {
+      // A locked body (search overlay open) means scrolling should stay put entirely.
+      if (document.body.style.overflow === 'hidden') return;
+      if (hasNativeScrollTarget(event.target, event.deltaY)) return;
+
+      event.preventDefault();
+      targetY = Math.min(maxScroll(), Math.max(0, targetY + event.deltaY));
+      if (!rafId) rafId = requestAnimationFrame(step);
+    }, { passive: false });
+
+    window.addEventListener('resize', () => {
+      targetY = Math.min(maxScroll(), targetY);
+    });
+
+    // Keep in sync with scrolls we didn't drive ourselves (scrollbar drag, keyboard, anchor links).
+    window.addEventListener('scroll', () => {
+      if (syncingScroll || rafId) return;
+      currentY = window.scrollY;
+      targetY = window.scrollY;
+    });
+  }
+
   function initScrollTopButton() {
     const btn = document.getElementById('scroll_top_btn');
     if (!btn) return;
@@ -1030,111 +1201,14 @@
   }
 
   /* ------------------------------------------------------------------ */
-  /* Brand typography hover glow                                         */
-  /* ------------------------------------------------------------------ */
-
-  function initBrandTypoGlow() {
-    const wrap = document.getElementById('brand_typo_wrap');
-    const glow = document.getElementById('brand_typo_glow');
-    if (!wrap || !glow) return;
-
-    let targetX = 50;
-    let targetY = 50;
-    let currentX = 50;
-    let currentY = 50;
-    let isAnimating = false;
-
-    const updateSpot = () => {
-      glow.style.setProperty('--spot-x', `${currentX}%`);
-      glow.style.setProperty('--spot-y', `${currentY}%`);
-    };
-
-    const animate = () => {
-      currentX += (targetX - currentX) * 0.12;
-      currentY += (targetY - currentY) * 0.12;
-      updateSpot();
-      if (Math.abs(targetX - currentX) > 0.1 || Math.abs(targetY - currentY) > 0.1) {
-        requestAnimationFrame(animate);
-      } else {
-        isAnimating = false;
-      }
-    };
-
-    const handlePointerMove = (event) => {
-      const rect = wrap.getBoundingClientRect();
-      targetX = ((event.clientX - rect.left) / rect.width) * 100;
-      targetY = ((event.clientY - rect.top) / rect.height) * 100;
-
-      if (isReducedMotion()) {
-        currentX = targetX;
-        currentY = targetY;
-        updateSpot();
-        return;
-      }
-
-      if (!isAnimating) {
-        isAnimating = true;
-        requestAnimationFrame(animate);
-      }
-    };
-
-    wrap.addEventListener('pointerenter', () => wrap.classList.add('is_hovering'));
-    wrap.addEventListener('pointerleave', () => wrap.classList.remove('is_hovering'));
-    wrap.addEventListener('pointermove', handlePointerMove);
-  }
-
-  /* ------------------------------------------------------------------ */
-  /* Brand typography auto-fit (flush to both edges, never clips)        */
-  /* ------------------------------------------------------------------ */
-
-  // A vw-based font-size can only ever approximate the exact pixel width of "NATIONALGEOGRAPHIC",
-  // so it has to leave a safety margin or risk overflow. Measuring the real rendered width and
-  // solving for the font-size that makes it exactly match the container is the only way to get
-  // a flush, edge-to-edge fit that's still guaranteed not to clip.
-  function fitBrandTypo() {
-    const wrap = document.getElementById('brand_typo_wrap');
-    if (!wrap) return;
-    const sample = wrap.querySelector('.brand_typo_base');
-    const allText = wrap.querySelectorAll('.brand_typo');
-    if (!sample || !allText.length) return;
-
-    const referenceSize = 100;
-    sample.style.fontSize = `${referenceSize}px`;
-    // `.brand_typo` is CSS `width:100%`, so getBoundingClientRect() would just report the box's
-    // forced width regardless of the actual glyph width. scrollWidth still reports the true
-    // (possibly overflowing, since white-space:nowrap) content width, which is what we need here.
-    const naturalWidth = sample.scrollWidth;
-    const containerWidth = wrap.getBoundingClientRect().width;
-    if (!naturalWidth || !containerWidth) return;
-
-    const fitSize = (containerWidth / naturalWidth) * referenceSize;
-    allText.forEach((el) => { el.style.fontSize = `${fitSize}px`; });
-  }
-
-  function initBrandTypoFit() {
-    if (!document.getElementById('brand_typo_wrap')) return;
-    fitBrandTypo();
-
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(fitBrandTypo);
-    }
-
-    let resizeTimer = null;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(fitBrandTypo, 150);
-    });
-  }
-
-  /* ------------------------------------------------------------------ */
-  /* Mouse follower glow (desktop pointer devices only)                   */
+  /* Mouse follower glow (any hover-capable, fine-pointer device — mouse/trackpad, any viewport) */
   /* ------------------------------------------------------------------ */
 
   function initMouseGlow() {
     const glow = document.getElementById('mouse_glow');
     if (!glow) return;
 
-    const desktopQuery = window.matchMedia('(min-width: 1280px) and (hover: hover) and (pointer: fine)');
+    const desktopQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
     const hasGsap = typeof window.gsap !== 'undefined';
 
     let active = false;
@@ -1227,6 +1301,11 @@
     addClickListener('search_toggle_btn', handleSearchToggle);
     addClickListener('search_close_btn', closeSearch);
     addClickListener('menu_toggle_btn', handleMenuToggle);
+    addClickListener('mobile_menu_close_btn', closeMobileMenu);
+    addClickListener('mobile_menu_scrim', closeMobileMenu);
+    document.querySelectorAll('.mobile_menu_link').forEach((link) => {
+      link.addEventListener('click', closeMobileMenu);
+    });
     addClickListener('exp_popover_close_btn', closeExpPopover);
     addClickListener('magazine_prev_btn', handleMagazinePrev);
     addClickListener('magazine_next_btn', handleMagazineNext);
@@ -1237,9 +1316,8 @@
     const searchInput = document.getElementById('search_input');
     if (searchInput) searchInput.addEventListener('input', handleSearchInputChange);
 
+    initSmoothWheelScroll();
     initScrollTopButton();
-    initBrandTypoGlow();
-    initBrandTypoFit();
     initMouseGlow();
     initApp();
 

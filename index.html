@@ -50,15 +50,29 @@
 </header>
 
 <div class="mobile_menu" id="mobile_menu" hidden>
-  <ul class="mobile_menu_list">
-    <li><a href="#" class="mobile_menu_link is_featured">디즈니플러스</a></li>
-    <li><a href="#magazine" class="mobile_menu_link">매거진</a></li>
-    <li><a href="#magazine" class="mobile_menu_link">카테고리</a></li>
-    <li><a href="#" class="mobile_menu_link">커뮤니티</a></li>
-    <li><a href="#" class="mobile_menu_link">설문조사</a></li>
-    <li><a href="#" class="mobile_menu_link">이벤트</a></li>
-    <li><a href="#" class="mobile_menu_link">MY</a></li>
-  </ul>
+  <div class="mobile_menu_scrim" id="mobile_menu_scrim" aria-hidden="true"></div>
+  <div class="mobile_menu_panel" role="dialog" aria-modal="true" aria-label="메뉴">
+    <div class="mobile_menu_header">
+      <span class="mobile_menu_logo" aria-hidden="true">
+        <img src="images/logo/logo_y.png" alt="" width="32" height="42" />
+      </span>
+      <button type="button" class="mobile_menu_close_btn" id="mobile_menu_close_btn">
+        <svg width="16" height="16" viewBox="0 0 16.3235 16.3235" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M15.5735 0.75L0.75 15.5735M0.75 0.75L15.5735 15.5735" stroke="#FFCE00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="sr_only">메뉴 닫기</span>
+      </button>
+    </div>
+    <ul class="mobile_menu_list">
+      <li><a href="#" class="mobile_menu_link">디즈니플러스</a></li>
+      <li><a href="#magazine" class="mobile_menu_link">매거진</a></li>
+      <li><a href="#magazine" class="mobile_menu_link">카테고리</a></li>
+      <li><a href="#" class="mobile_menu_link">커뮤니티</a></li>
+      <li><a href="#" class="mobile_menu_link">설문조사</a></li>
+      <li><a href="#" class="mobile_menu_link">이벤트</a></li>
+      <li><a href="#" class="mobile_menu_link">MY</a></li>
+    </ul>
+  </div>
 </div>
 
 <div class="search_overlay" id="search_panel" role="dialog" aria-modal="true" aria-label="검색" hidden>
@@ -143,8 +157,16 @@
   <section class="brand_typo_section" aria-hidden="true">
     <img src="images/icon/down_arrow.svg" class="brand_typo_arrow" alt="" width="58" height="30" />
     <div class="brand_typo_wrap" id="brand_typo_wrap">
-      <p class="brand_typo brand_typo_base">NATIONALGEOGRAPHIC</p>
-      <p class="brand_typo brand_typo_glow" id="brand_typo_glow">NATIONALGEOGRAPHIC</p>
+      <div class="brand_typo_track brand_typo_base">
+        <span class="brand_typo_word">NATIONALGEOGRAPHIC</span>
+        <span class="brand_typo_word">NATIONALGEOGRAPHIC</span>
+        <span class="brand_typo_word">NATIONALGEOGRAPHIC</span>
+        <span class="brand_typo_word">NATIONALGEOGRAPHIC</span>
+        <span class="brand_typo_word">NATIONALGEOGRAPHIC</span>
+        <span class="brand_typo_word">NATIONALGEOGRAPHIC</span>
+        <span class="brand_typo_word">NATIONALGEOGRAPHIC</span>
+        <span class="brand_typo_word">NATIONALGEOGRAPHIC</span>
+      </div>
     </div>
   </section>
 
@@ -265,10 +287,18 @@
   </div>
 </footer>
 
-<button type="button" class="scroll_top_btn" id="scroll_top_btn" hidden>
-  <img src="images/icon/Arrowup.svg" alt="" width="14" height="18" />
-  <span class="sr_only">맨 위로 이동</span>
-</button>
+<div class="floating_actions">
+  <button type="button" class="ai_chat_btn" id="ai_chat_btn">
+    <img src="images/icon/aichat.svg" alt="" width="22" height="22" />
+    <span class="floating_btn_label" aria-hidden="true">AI</span>
+    <span class="sr_only">AI 챗봇 열기</span>
+  </button>
+  <button type="button" class="scroll_top_btn" id="scroll_top_btn" hidden>
+    <img src="images/icon/Arrowup.svg" alt="" width="14" height="18" />
+    <span class="floating_btn_label" aria-hidden="true">TOP</span>
+    <span class="sr_only">맨 위로 이동</span>
+  </button>
+</div>
 
 <div class="toast" id="toast" role="status" aria-live="assertive" hidden></div>
 
