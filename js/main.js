@@ -411,66 +411,68 @@
   /* Today's Exp map                                                     */
   /* ------------------------------------------------------------------ */
 
-  // Clickable zone of each region, as a polygon in % of the map image. The zones tile the whole map,
-  // so a click anywhere on it — land or sea — resolves to exactly one region.
-  const EXP_REGION_ZONES = {
-    north_america: [[0, 0], [46, 0], [46, 12], [42, 18.5], [39.2, 19.8], [39.2, 26], [41, 30], [41, 56], [24.7, 56], [24.7, 60.5], [0, 60.5]],
-    south_america: [[0, 60.5], [24.7, 60.5], [24.7, 56], [41, 56], [41, 100], [0, 100]],
-    europe: [[46, 0], [65.8, 0], [65.8, 37.5], [62.7, 39.5], [56.2, 41.8], [56.2, 45.1], [41, 45.1], [41, 30], [39.2, 26], [39.2, 19.8], [42, 18.5], [46, 12]],
-    africa: [[41, 45.1], [56.2, 45.1], [57.5, 49], [58.5, 53], [60, 57.5], [62, 58.2], [66, 60], [66, 100], [41, 100]],
-    asia: [[65.8, 0], [100, 0], [100, 63.5], [82.6, 63.5], [82.6, 69.8], [66, 69.8], [66, 60], [62, 58.2], [60, 57.5], [58.5, 53], [57.5, 49], [56.2, 45.1], [56.2, 41.8], [62.7, 39.5], [65.8, 37.5]],
-    oceania: [[66, 69.8], [82.6, 69.8], [82.6, 63.5], [100, 63.5], [100, 100], [66, 100]]
-  };
-
   let lastFocusedBeforePopover = null;
-  let activeExpRegionId = null;
-  let hoveredExpRegionId = null;
-  let expPopoverAnchor = null; // { x, y } in % of the map
-  const expVideoCursor = {}; // regionId -> index of the next video to recommend
 
-  function isPointInZone(x, y, zone) {
-    let inside = false;
-    for (let i = 0, j = zone.length - 1; i < zone.length; j = i, i += 1) {
-      const [xi, yi] = zone[i];
-      const [xj, yj] = zone[j];
-      if ((yi > y) !== (yj > y) && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside;
-    }
-    return inside;
+  // Dozens of small spots (land and sea) are scattered over the map, each with its own video.
+  // A click recommends the spot nearest to it, so every little area of the map hides something different.
+  const EXP_KEY_STEP = 2; // % of the map moved per arrow-key press
+
+  let expSpots = [];
+  let activeExpPoint = null; // clicked point, { x, y } in % of the map, while the popover is open
+  let hoverExpPoint = null;
+  let expKeyPoint = { x: 50, y: 50 };
+
+  function getNearestExpSpot(point) {
+    const map = document.getElementById('todays_exp_map');
+    // Compare distances in pixels: 1% of the width is not the same length as 1% of the height
+    const aspect = map.clientWidth / map.clientHeight;
+    let nearest = null;
+    let nearestDistance = Infinity;
+    expSpots.forEach((spot) => {
+      const dx = (spot.coords.x - point.x) * aspect;
+      const dy = spot.coords.y - point.y;
+      const distance = dx * dx + dy * dy;
+      if (distance < nearestDistance) {
+        nearest = spot;
+        nearestDistance = distance;
+      }
+    });
+    return nearest;
   }
 
-  function getExpRegionAt(x, y) {
-    const ids = Object.keys(EXP_REGION_ZONES);
-    return ids.find((id) => isPointInZone(x, y, EXP_REGION_ZONES[id])) || ids[0];
-  }
-
-  function updateExpMapHighlight() {
-    const highlight = document.getElementById('map_highlight');
-    if (!highlight) return;
-    const zone = EXP_REGION_ZONES[hoveredExpRegionId || activeExpRegionId];
-    if (!zone) {
-      highlight.classList.remove('is_visible');
+  // Lights up only the handful of map dots under `point`: the glow is a small disc masked by the map
+  // artwork, with the mask offset so its dots line up with the image underneath.
+  function placeExpGlow(el, point) {
+    const map = document.getElementById('todays_exp_map');
+    if (!el || !map) return;
+    if (!point) {
+      el.classList.remove('is_visible');
       return;
     }
-    highlight.style.clipPath = `polygon(${zone.map(([x, y]) => `${x}% ${y}%`).join(', ')})`;
-    highlight.classList.add('is_visible');
+    const mapWidth = map.clientWidth;
+    const mapHeight = map.clientHeight;
+    const size = el.offsetWidth;
+    const left = (point.x / 100) * mapWidth - size / 2;
+    const top = (point.y / 100) * mapHeight - size / 2;
+    const maskSize = `${mapWidth}px ${mapHeight}px`;
+    const maskPosition = `${-left}px ${-top}px`;
+    el.style.transform = `translate(${left}px, ${top}px)`;
+    el.style.webkitMaskSize = maskSize;
+    el.style.maskSize = maskSize;
+    el.style.webkitMaskPosition = maskPosition;
+    el.style.maskPosition = maskPosition;
+    el.classList.add('is_visible');
   }
 
-  function initExpMap(regions) {
+  function updateExpGlows() {
+    placeExpGlow(document.getElementById('map_glow_active'), activeExpPoint);
+    placeExpGlow(document.getElementById('map_glow_hover'), hoverExpPoint);
+  }
+
+  function initExpMap(spots) {
     const map = document.getElementById('todays_exp_map');
-    const list = document.getElementById('map_region_list');
-    if (!map || !list || !regions) return;
-
-    // Keyboard / screen-reader route to the same recommendation a click on the map gives
-    list.innerHTML = regions.map((region) => `
-      <button type="button" class="map_region_btn sr_only" data-region-id="${region.id}">${escapeHtml(region.name)} 추천 영상 보기</button>
-    `).join('');
-
-    list.querySelectorAll('.map_region_btn').forEach((btn) => {
-      const region = regions.find((r) => r.id === btn.dataset.regionId);
-      btn.addEventListener('click', () => openExpPopover(region.id, region.coords, btn));
-      btn.addEventListener('focus', () => { hoveredExpRegionId = region.id; updateExpMapHighlight(); });
-      btn.addEventListener('blur', () => { hoveredExpRegionId = null; updateExpMapHighlight(); });
-    });
+    if (!map || !spots) return;
+    expSpots = spots;
 
     const getMapPoint = (event) => {
       const rect = map.getBoundingClientRect();
@@ -481,41 +483,63 @@
     };
 
     map.addEventListener('click', (event) => {
-      if (event.target.closest('.exp_popover, .map_region_btn')) return;
-      const point = getMapPoint(event);
-      openExpPopover(getExpRegionAt(point.x, point.y), point, null);
+      if (event.target.closest('.exp_popover')) return;
+      openExpPopover(getMapPoint(event));
     });
 
     map.addEventListener('pointermove', (event) => {
       if (event.pointerType === 'touch') return;
-      const point = getMapPoint(event);
-      const regionId = event.target.closest('.exp_popover') ? null : getExpRegionAt(point.x, point.y);
-      if (regionId === hoveredExpRegionId) return;
-      hoveredExpRegionId = regionId;
-      updateExpMapHighlight();
+      hoverExpPoint = event.target.closest('.exp_popover') ? null : getMapPoint(event);
+      placeExpGlow(document.getElementById('map_glow_hover'), hoverExpPoint);
     });
 
     map.addEventListener('pointerleave', () => {
-      hoveredExpRegionId = null;
-      updateExpMapHighlight();
+      hoverExpPoint = null;
+      placeExpGlow(document.getElementById('map_glow_hover'), null);
+    });
+
+    // Keyboard: arrow keys move the glow across the map, Enter / Space recommends for where it is
+    map.addEventListener('keydown', (event) => {
+      if (event.target !== map) return;
+      const moves = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
+      if (moves[event.key]) {
+        event.preventDefault();
+        const [dx, dy] = moves[event.key];
+        expKeyPoint = {
+          x: Math.min(100, Math.max(0, expKeyPoint.x + dx * EXP_KEY_STEP)),
+          y: Math.min(100, Math.max(0, expKeyPoint.y + dy * EXP_KEY_STEP))
+        };
+        hoverExpPoint = expKeyPoint;
+        placeExpGlow(document.getElementById('map_glow_hover'), hoverExpPoint);
+      } else if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openExpPopover(expKeyPoint, map);
+      }
+    });
+
+    map.addEventListener('focus', () => {
+      if (!map.matches(':focus-visible')) return;
+      hoverExpPoint = expKeyPoint;
+      placeExpGlow(document.getElementById('map_glow_hover'), hoverExpPoint);
+    });
+
+    map.addEventListener('blur', () => {
+      hoverExpPoint = null;
+      placeExpGlow(document.getElementById('map_glow_hover'), null);
     });
   }
 
-  function openExpPopover(regionId, anchor, triggerEl) {
-    const region = natGeoData.todaysExp.find((r) => r.id === regionId);
-    if (!region || !region.videos.length) return;
-
-    // Step through the region's videos so clicking the same region again recommends another one
-    const videoIndex = (expVideoCursor[regionId] || 0) % region.videos.length;
-    expVideoCursor[regionId] = videoIndex + 1;
-    const video = region.videos[videoIndex];
+  function openExpPopover(point, triggerEl) {
+    const spot = getNearestExpSpot(point);
+    if (!spot) return;
+    const video = spot.video;
 
     const popover = document.getElementById('exp_popover');
-    if (popover.hidden) lastFocusedBeforePopover = triggerEl;
-    activeExpRegionId = regionId;
-    expPopoverAnchor = anchor;
+    if (popover.hidden) lastFocusedBeforePopover = triggerEl || null;
+    activeExpPoint = point;
 
-    document.getElementById('exp_popover_region').textContent = `${region.name} 추천 영상`;
+    document.getElementById('exp_popover_region').textContent =
+      spot.region === spot.name ? spot.name : `${spot.region} · ${spot.name}`;
     document.getElementById('exp_popover_thumb_img').src = video.thumbnail;
     document.getElementById('exp_popover_title').textContent = video.title;
     document.getElementById('exp_popover_tag').textContent = video.category;
@@ -524,10 +548,10 @@
     // Restart the entrance transition, including when the popover is already open for another spot
     popover.classList.remove('is_open');
     popover.hidden = false;
-    positionExpPopover(popover, anchor);
+    positionExpPopover(popover, point);
     void popover.offsetWidth;
     requestAnimationFrame(() => popover.classList.add('is_open'));
-    updateExpMapHighlight();
+    updateExpGlows();
 
     document.addEventListener('keydown', handlePopoverKeydown);
     document.addEventListener('pointerdown', handlePopoverOutsideClick);
@@ -564,9 +588,8 @@
     const popover = document.getElementById('exp_popover');
     popover.classList.remove('is_open');
     popover.hidden = true;
-    activeExpRegionId = null;
-    expPopoverAnchor = null;
-    updateExpMapHighlight();
+    activeExpPoint = null;
+    updateExpGlows();
     document.removeEventListener('keydown', handlePopoverKeydown);
     document.removeEventListener('pointerdown', handlePopoverOutsideClick);
     if (lastFocusedBeforePopover) lastFocusedBeforePopover.focus();
@@ -1414,7 +1437,8 @@
       resizeTimer = setTimeout(() => {
         updateBannerPreviewPosition();
         const popover = document.getElementById('exp_popover');
-        if (popover && !popover.hidden && expPopoverAnchor) positionExpPopover(popover, expPopoverAnchor);
+        if (popover && !popover.hidden && activeExpPoint) positionExpPopover(popover, activeExpPoint);
+        updateExpGlows();
       }, 150);
     });
   });

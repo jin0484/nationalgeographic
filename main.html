@@ -183,10 +183,11 @@
       <h2 class="section_heading" id="todays_exp_heading">Today's Exp</h2>
       <p class="section_desc">원하는 지역을 클릭하여 탐험을 즐겨요!</p>
 
-      <div class="todays_exp_map" id="todays_exp_map">
-        <img src="images/map.png" alt="세계 지도" class="map_image" />
-        <div class="map_highlight" id="map_highlight" aria-hidden="true"></div>
-        <div class="map_region_list" id="map_region_list"></div>
+      <div class="todays_exp_map" id="todays_exp_map" tabindex="0" role="group"
+        aria-label="세계 지도. 방향키로 위치를 옮기고 Enter 키를 누르면 그 지역의 추천 영상을 볼 수 있습니다.">
+        <img src="images/map.png" alt="" class="map_image" />
+        <div class="map_glow" id="map_glow_active" aria-hidden="true"></div>
+        <div class="map_glow" id="map_glow_hover" aria-hidden="true"></div>
 
         <div class="exp_popover" id="exp_popover" role="dialog" aria-modal="false" aria-labelledby="exp_popover_title" hidden>
           <button type="button" class="exp_popover_close_btn" id="exp_popover_close_btn">

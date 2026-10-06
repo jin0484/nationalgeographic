@@ -39,142 +39,996 @@
   ],
   "todaysExp": [
     {
-      "id": "africa",
-      "name": "아프리카",
-      "coords": { "x": 53, "y": 52 },
-      "videos": [
-        {
-          "id": "africa_01",
-          "category": "역사",
-          "title": "수단 피라미드가 품은 미라의 비밀",
-          "date": "2026.05.14",
-          "thumbnail": "images/magazine3.png",
-          "description": "메로에의 모래 언덕 아래, 3천 년의 시간을 견뎌낸 왕족의 미라가 발굴됐다. 고대 쿠시 왕국의 마지막 비밀을 들려준다."
-        },
-        {
-          "id": "africa_02",
-          "category": "동물",
-          "title": "사바나의 어린 사자들",
-          "date": "2026.06.02",
-          "thumbnail": "images/recommend2.png",
-          "description": "사바나의 어린 사자 무리가 처음으로 사냥을 배우며 무리의 규칙을 익혀가는 성장의 나날들을 기록했다."
-        }
-      ]
+      "id": "alaska",
+      "region": "북아메리카",
+      "name": "알래스카",
+      "coords": {
+        "x": 6,
+        "y": 23
+      },
+      "video": {
+        "category": "여행",
+        "title": "알래스카, 부자의 낚시 여행",
+        "date": "2026.07.02",
+        "thumbnail": "images/map2.png",
+        "description": "포트 프로텍션의 주민들이 알래스카의 변덕스러운 기후에 맞선 도전의 나날들을 보낸다."
+      }
     },
     {
-      "id": "asia",
-      "name": "아시아",
-      "coords": { "x": 74, "y": 32 },
-      "videos": [
-        {
-          "id": "asia_01",
-          "category": "여행",
-          "title": "몽골 초원, 무지개 아래에서",
-          "date": "2026.04.21",
-          "thumbnail": "images/banner1.png",
-          "description": "유목민 가족과 함께한 몽골 초원 횡단기. 소나기 뒤 초원을 가로지른 무지개 아래에서 유목의 삶을 마주한다."
-        },
-        {
-          "id": "asia_02",
-          "category": "동물",
-          "title": "밀림 속 초록빛 눈동자",
-          "date": "2026.03.30",
-          "thumbnail": "images/magazine2.png",
-          "description": "동남아시아 우림에 서식하는 대나무살모사의 눈동자를 초근접 촬영했다. 진화가 빚어낸 정교한 사냥 도구를 담았다."
-        }
-      ]
+      "id": "british_columbia",
+      "region": "북아메리카",
+      "name": "캐나다 서부 해안",
+      "coords": {
+        "x": 12,
+        "y": 31
+      },
+      "video": {
+        "category": "동물",
+        "title": "밴쿠버섬, 돌아온 혹등고래",
+        "date": "2026.05.19",
+        "thumbnail": "images/banner4.png",
+        "description": "한때 자취를 감췄던 혹등고래가 밴쿠버섬 앞바다로 돌아왔다. 수십 년 만의 귀환을 지켜본 연구자들의 기록."
+      }
     },
     {
-      "id": "north_america",
-      "name": "북아메리카",
-      "coords": { "x": 16, "y": 30 },
-      "videos": [
-        {
-          "id": "na_01",
-          "category": "여행",
-          "title": "알래스카, 부자의 낚시 여행",
-          "date": "2026.07.02",
-          "thumbnail": "images/map2.png",
-          "description": "포트 프로텍션의 주민들이 알래스카의 변덕스러운 기후에 맞선 도전의 나날들을 보낸다."
-        },
-        {
-          "id": "na_02",
-          "category": "사진",
-          "title": "도시의 속도, 뉴욕 스트리트 라이더",
-          "date": "2026.02.18",
-          "thumbnail": "images/magazine1.png",
-          "description": "한계에 도전하는 자전거 라이더들이 어떻게 뉴욕시의 거리를 다시 점령했는지 한 사진작가의 렌즈로 살펴본다."
-        }
-      ]
+      "id": "canada_north",
+      "region": "북아메리카",
+      "name": "캐나다 북부 타이가",
+      "coords": {
+        "x": 20,
+        "y": 24
+      },
+      "video": {
+        "category": "동물",
+        "title": "눈 위의 유령, 캐나다스라소니",
+        "date": "2026.02.03",
+        "thumbnail": "images/onboarding/bottom.png",
+        "description": "영하 40도의 타이가에서 눈덧신토끼를 쫓는 캐나다스라소니. 발자국만 남기는 사냥꾼의 겨울을 따라간다."
+      }
     },
     {
-      "id": "south_america",
-      "name": "남아메리카",
-      "coords": { "x": 28, "y": 66 },
-      "videos": [
-        {
-          "id": "sa_01",
-          "category": "자연",
-          "title": "아마존, 카누가 멈춘 자리",
-          "date": "2026.01.27",
-          "thumbnail": "images/quiz.png",
-          "description": "우기가 끝난 아마존 지류를 따라 카누로 거슬러 오르며 만난 원시림의 소리와 정적을 기록했다."
-        },
-        {
-          "id": "sa_02",
-          "category": "동물",
-          "title": "태평양의 혹등고래",
-          "date": "2026.06.09",
-          "thumbnail": "images/banner4.png",
-          "description": "매년 남태평양을 회유하는 혹등고래 무리를 따라가며 그들의 노랫소리와 이동 경로를 추적했다."
-        }
-      ]
+      "id": "greenland",
+      "region": "북아메리카",
+      "name": "그린란드",
+      "coords": {
+        "x": 36,
+        "y": 12
+      },
+      "video": {
+        "category": "여행",
+        "title": "그린란드 피오르의 어부들",
+        "date": "2026.03.22",
+        "thumbnail": "images/map2.png",
+        "description": "빙산 사이로 작은 배를 모는 이누이트 어부들. 녹아내리는 얼음이 바꿔 놓은 바다의 달력을 듣는다."
+      }
     },
     {
-      "id": "europe",
-      "name": "유럽",
-      "coords": { "x": 54, "y": 21 },
-      "videos": [
-        {
-          "id": "eu_01",
-          "category": "컬처",
-          "title": "미슐랭 셰프의 부엌",
-          "date": "2026.05.30",
-          "thumbnail": "images/map3_video.png",
-          "description": "별 하나를 지키기 위해 매일 새벽을 여는 셰프의 부엌. 한 접시가 완성되기까지의 치열한 과정을 담았다."
-        },
-        {
-          "id": "eu_02",
-          "category": "동물",
-          "title": "심해에서 만난 낯선 얼굴",
-          "date": "2026.03.11",
-          "thumbnail": "images/recommend3.png",
-          "description": "빛이 닿지 않는 심해에서 포착된 낯선 생명체들. 극한 환경이 빚어낸 기이한 생김새를 들여다본다."
-        }
-      ]
+      "id": "us_west",
+      "region": "북아메리카",
+      "name": "미국 서부 사막",
+      "coords": {
+        "x": 14,
+        "y": 42
+      },
+      "video": {
+        "category": "사진",
+        "title": "유타 사막, 별이 그리는 원",
+        "date": "2026.04.08",
+        "thumbnail": "images/onboarding/space_color.png",
+        "description": "빛 공해가 닿지 않는 유타의 붉은 사막에서 밤새 셔터를 열어 두었다. 북극성을 중심으로 도는 하늘을 담았다."
+      }
     },
     {
-      "id": "oceania",
-      "name": "오세아니아",
-      "coords": { "x": 87, "y": 76 },
-      "videos": [
-        {
-          "id": "oc_01",
-          "category": "동물",
-          "title": "황제펭귄, 얼음 위의 첫걸음",
-          "date": "2026.07.14",
-          "thumbnail": "images/recommend1.png",
-          "description": "부화한 지 얼마 안 된 황제펭귄 새끼가 살을 에는 남극의 얼음 위에서 첫걸음을 떼는 순간을 포착했다."
-        },
-        {
-          "id": "oc_02",
-          "category": "동물",
-          "title": "태평양의 혹등고래",
-          "date": "2026.06.09",
-          "thumbnail": "images/banner4.png",
-          "description": "오세아니아 연안을 지나는 혹등고래 무리의 웅장한 도약을 드론과 수중 카메라로 함께 담았다."
-        }
-      ]
+      "id": "houston",
+      "region": "북아메리카",
+      "name": "미국 휴스턴",
+      "coords": {
+        "x": 19,
+        "y": 46
+      },
+      "video": {
+        "category": "우주",
+        "title": "샐리, 하늘을 연 여성",
+        "date": "2026.06.18",
+        "thumbnail": "images/banner3.png",
+        "description": "미국 최초의 여성 우주비행사 샐리 라이드. 존슨 우주센터에서 시작된 그녀의 숨겨진 이야기를 따라간다."
+      }
+    },
+    {
+      "id": "new_york",
+      "region": "북아메리카",
+      "name": "뉴욕",
+      "coords": {
+        "x": 25,
+        "y": 39
+      },
+      "video": {
+        "category": "사진",
+        "title": "도시의 속도, 뉴욕 스트리트 라이더",
+        "date": "2026.02.18",
+        "thumbnail": "images/magazine1.png",
+        "description": "한계에 도전하는 자전거 라이더들이 어떻게 뉴욕시의 거리를 다시 점령했는지 한 사진작가의 렌즈로 살펴본다."
+      }
+    },
+    {
+      "id": "florida",
+      "region": "북아메리카",
+      "name": "플로리다",
+      "coords": {
+        "x": 24.5,
+        "y": 49
+      },
+      "video": {
+        "category": "우주",
+        "title": "케네디 우주센터, 발사 10초 전",
+        "date": "2026.01.30",
+        "thumbnail": "images/banner2.png",
+        "description": "헬멧 너머로 본 발사대의 마지막 10초. 우주비행사가 지구를 떠나기 직전의 고요를 기록했다."
+      }
+    },
+    {
+      "id": "yucatan",
+      "region": "북아메리카",
+      "name": "멕시코 유카탄",
+      "coords": {
+        "x": 19.5,
+        "y": 51.5
+      },
+      "video": {
+        "category": "동물",
+        "title": "유카탄 정글의 초록 사냥꾼",
+        "date": "2026.05.05",
+        "thumbnail": "images/magazine2.png",
+        "description": "마야 유적을 덮은 정글 속, 나뭇잎과 구분되지 않는 초록 뱀의 매복 사냥을 초근접으로 촬영했다."
+      }
+    },
+    {
+      "id": "caribbean",
+      "region": "북아메리카",
+      "name": "카리브해",
+      "coords": {
+        "x": 27,
+        "y": 53
+      },
+      "video": {
+        "category": "동물",
+        "title": "바하마, 어린 상어의 보육원",
+        "date": "2026.06.25",
+        "thumbnail": "images/recommend3.png",
+        "description": "맹그로브 숲은 어린 레몬상어의 보육원이다. 얕은 바다에서 첫해를 보내는 상어들을 연구자와 함께 만난다."
+      }
+    },
+    {
+      "id": "costa_rica",
+      "region": "북아메리카",
+      "name": "코스타리카",
+      "coords": {
+        "x": 23,
+        "y": 57.5
+      },
+      "video": {
+        "category": "자연",
+        "title": "코스타리카 구름숲의 아침",
+        "date": "2026.03.14",
+        "thumbnail": "images/quiz.png",
+        "description": "안개가 걷히는 새벽, 구름숲의 강을 따라 깨어나는 생명들의 소리를 담았다."
+      }
+    },
+    {
+      "id": "amazon",
+      "region": "남아메리카",
+      "name": "아마존",
+      "coords": {
+        "x": 31,
+        "y": 66
+      },
+      "video": {
+        "category": "자연",
+        "title": "아마존, 카누가 멈춘 자리",
+        "date": "2026.01.27",
+        "thumbnail": "images/quiz.png",
+        "description": "우기가 끝난 아마존 지류를 따라 카누로 거슬러 오르며 만난 원시림의 소리와 정적을 기록했다."
+      }
+    },
+    {
+      "id": "andes",
+      "region": "남아메리카",
+      "name": "페루 안데스",
+      "coords": {
+        "x": 26.5,
+        "y": 70
+      },
+      "video": {
+        "category": "역사",
+        "title": "안데스의 얼음 미라",
+        "date": "2026.04.27",
+        "thumbnail": "images/magazine3.png",
+        "description": "해발 6천 미터 화산 정상에서 발견된 잉카의 미라. 500년 동안 얼음이 지켜 온 마지막 순간을 복원한다."
+      }
+    },
+    {
+      "id": "galapagos",
+      "region": "남아메리카",
+      "name": "갈라파고스",
+      "coords": {
+        "x": 20,
+        "y": 64
+      },
+      "video": {
+        "category": "자연",
+        "title": "갈라파고스, 진화의 해변",
+        "date": "2026.02.11",
+        "thumbnail": "images/onboarding/sea_color.png",
+        "description": "다윈이 걸었던 화산섬의 해변. 밀물과 썰물 사이 조수 웅덩이에서 진화의 실험이 계속되고 있다."
+      }
+    },
+    {
+      "id": "brazil_coast",
+      "region": "남아메리카",
+      "name": "브라질 대서양 연안",
+      "coords": {
+        "x": 35.5,
+        "y": 70
+      },
+      "video": {
+        "category": "동물",
+        "title": "아브롤류스의 혹등고래",
+        "date": "2026.07.09",
+        "thumbnail": "images/banner4.png",
+        "description": "해마다 겨울이면 브라질 아브롤류스 군도로 모여드는 혹등고래들의 구애와 출산을 기록했다."
+      }
+    },
+    {
+      "id": "atacama",
+      "region": "남아메리카",
+      "name": "아타카마 사막",
+      "coords": {
+        "x": 28,
+        "y": 77
+      },
+      "video": {
+        "category": "우주",
+        "title": "아타카마, 지구에서 가장 맑은 밤",
+        "date": "2026.05.23",
+        "thumbnail": "images/onboarding/space_color.png",
+        "description": "세계에서 가장 건조한 사막 위로 은하수가 흐른다. 천문학자들이 이곳에 망원경을 세우는 이유를 찾아간다."
+      }
+    },
+    {
+      "id": "patagonia",
+      "region": "남아메리카",
+      "name": "파타고니아",
+      "coords": {
+        "x": 28.5,
+        "y": 92
+      },
+      "video": {
+        "category": "동물",
+        "title": "세상의 끝, 펭귄의 해안",
+        "date": "2026.03.03",
+        "thumbnail": "images/recommend1.png",
+        "description": "대륙의 남쪽 끝 바람 부는 해안에서 새끼를 기르는 펭귄 무리의 한 계절을 따라간다."
+      }
+    },
+    {
+      "id": "hawaii",
+      "region": "태평양",
+      "name": "하와이",
+      "coords": {
+        "x": 4,
+        "y": 50
+      },
+      "video": {
+        "category": "자연",
+        "title": "하와이, 용암이 만든 조수 웅덩이",
+        "date": "2026.04.16",
+        "thumbnail": "images/onboarding/sea_color.png",
+        "description": "굳은 용암 사이에 고인 바닷물 속 작은 세계. 섬이 태어나는 자리에서 가장 먼저 정착하는 생명들을 만난다."
+      }
+    },
+    {
+      "id": "point_nemo",
+      "region": "태평양",
+      "name": "남태평양 포인트 니모",
+      "coords": {
+        "x": 10,
+        "y": 80
+      },
+      "video": {
+        "category": "우주",
+        "title": "포인트 니모, 우주선의 무덤",
+        "date": "2026.06.06",
+        "thumbnail": "images/banner2.png",
+        "description": "육지에서 가장 먼 바다, 임무를 마친 우주선들이 잠드는 곳. 우주비행사가 들려주는 마지막 귀환 이야기."
+      }
+    },
+    {
+      "id": "north_atlantic",
+      "region": "대서양",
+      "name": "북대서양",
+      "coords": {
+        "x": 36,
+        "y": 40
+      },
+      "video": {
+        "category": "동물",
+        "title": "북대서양, 청상아리의 대이동",
+        "date": "2026.02.26",
+        "thumbnail": "images/recommend3.png",
+        "description": "위성 꼬리표를 단 어린 상어 한 마리가 대서양을 가로지른다. 연구선 위에서 그 여정의 시작을 지켜봤다."
+      }
+    },
+    {
+      "id": "south_atlantic",
+      "region": "대서양",
+      "name": "남대서양 사우스조지아",
+      "coords": {
+        "x": 42,
+        "y": 86
+      },
+      "video": {
+        "category": "동물",
+        "title": "사우스조지아, 펭귄 백만 마리의 섬",
+        "date": "2026.01.12",
+        "thumbnail": "images/recommend1.png",
+        "description": "남대서양의 외딴섬을 가득 메운 펭귄 군락. 솜털을 벗지 못한 새끼들이 서로 몸을 붙여 겨울을 난다."
+      }
+    },
+    {
+      "id": "indian_ocean",
+      "region": "인도양",
+      "name": "인도양",
+      "coords": {
+        "x": 70,
+        "y": 80
+      },
+      "video": {
+        "category": "동물",
+        "title": "인도양, 고래의 노래를 듣다",
+        "date": "2026.05.11",
+        "thumbnail": "images/banner4.png",
+        "description": "수중 마이크로 기록한 고래의 노래는 해마다 조금씩 달라진다. 인도양을 떠도는 가수들을 추적했다."
+      }
+    },
+    {
+      "id": "arctic_ocean",
+      "region": "북극해",
+      "name": "북극해",
+      "coords": {
+        "x": 62,
+        "y": 4
+      },
+      "video": {
+        "category": "우주",
+        "title": "북극 상공 400km, 우주에서 본 오로라",
+        "date": "2026.03.29",
+        "thumbnail": "images/banner2.png",
+        "description": "국제우주정거장의 창밖으로 초록빛 커튼이 지구를 감싼다. 우주비행사가 직접 촬영한 오로라의 기록."
+      }
+    },
+    {
+      "id": "antarctic",
+      "region": "남극해",
+      "name": "남극해",
+      "coords": {
+        "x": 62,
+        "y": 95
+      },
+      "video": {
+        "category": "동물",
+        "title": "황제펭귄, 얼음 위의 첫걸음",
+        "date": "2026.07.14",
+        "thumbnail": "images/recommend1.png",
+        "description": "부화한 지 얼마 안 된 황제펭귄 새끼가 살을 에는 남극의 얼음 위에서 첫걸음을 떼는 순간을 포착했다."
+      }
+    },
+    {
+      "id": "mariana",
+      "region": "태평양",
+      "name": "서태평양 마리아나",
+      "coords": {
+        "x": 93,
+        "y": 53
+      },
+      "video": {
+        "category": "동물",
+        "title": "심해에서 만난 낯선 얼굴",
+        "date": "2026.03.11",
+        "thumbnail": "images/recommend3.png",
+        "description": "빛이 닿지 않는 심해에서 포착된 낯선 생명체들. 극한 환경이 빚어낸 기이한 생김새를 들여다본다."
+      }
+    },
+    {
+      "id": "iceland",
+      "region": "유럽",
+      "name": "아이슬란드",
+      "coords": {
+        "x": 41,
+        "y": 22
+      },
+      "video": {
+        "category": "동물",
+        "title": "후사비크, 고래의 만",
+        "date": "2026.06.21",
+        "thumbnail": "images/banner4.png",
+        "description": "아이슬란드 북쪽의 작은 항구 후사비크. 여름마다 만으로 들어오는 혹등고래를 기다리는 사람들의 이야기."
+      }
+    },
+    {
+      "id": "scotland",
+      "region": "유럽",
+      "name": "영국 스코틀랜드",
+      "coords": {
+        "x": 46,
+        "y": 29
+      },
+      "video": {
+        "category": "여행",
+        "title": "북쪽 섬의 등대와 양 떼",
+        "date": "2026.04.02",
+        "thumbnail": "images/onboarding/nature_color.png",
+        "description": "바람이 멈추지 않는 섬, 등대 하나와 양 떼가 전부인 풍경 속에서 등대지기의 마지막 여름을 기록했다."
+      }
+    },
+    {
+      "id": "norway",
+      "region": "유럽",
+      "name": "노르웨이 피오르",
+      "coords": {
+        "x": 53,
+        "y": 20
+      },
+      "video": {
+        "category": "여행",
+        "title": "로포텐, 대구잡이 배의 겨울",
+        "date": "2026.01.19",
+        "thumbnail": "images/map2.png",
+        "description": "극야가 끝나갈 무렵 로포텐 제도의 어부들은 바다로 나간다. 천 년을 이어 온 대구잡이의 하루를 함께했다."
+      }
+    },
+    {
+      "id": "france",
+      "region": "유럽",
+      "name": "프랑스",
+      "coords": {
+        "x": 48.5,
+        "y": 37
+      },
+      "video": {
+        "category": "컬처",
+        "title": "미슐랭 셰프의 부엌",
+        "date": "2026.05.30",
+        "thumbnail": "images/map3_video.png",
+        "description": "별 하나를 지키기 위해 매일 새벽을 여는 셰프의 부엌. 한 접시가 완성되기까지의 치열한 과정을 담았다."
+      }
+    },
+    {
+      "id": "iberia",
+      "region": "유럽",
+      "name": "이베리아반도",
+      "coords": {
+        "x": 45.5,
+        "y": 42
+      },
+      "video": {
+        "category": "동물",
+        "title": "이베리아스라소니의 귀환",
+        "date": "2026.02.08",
+        "thumbnail": "images/onboarding/bottom.png",
+        "description": "멸종 직전 100마리도 남지 않았던 이베리아스라소니. 20년에 걸친 복원 끝에 숲으로 돌아온 과정을 따라간다."
+      }
+    },
+    {
+      "id": "mediterranean",
+      "region": "유럽",
+      "name": "지중해",
+      "coords": {
+        "x": 52.5,
+        "y": 42
+      },
+      "video": {
+        "category": "자연",
+        "title": "지중해, 아무도 모르는 해변",
+        "date": "2026.07.05",
+        "thumbnail": "images/onboarding/sea_color.png",
+        "description": "관광 지도에 없는 작은 만. 파도가 밀어 올린 불가사리와 함께 지중해의 원래 얼굴을 만난다."
+      }
+    },
+    {
+      "id": "carpathians",
+      "region": "유럽",
+      "name": "동유럽 카르파티아",
+      "coords": {
+        "x": 56.5,
+        "y": 33.5
+      },
+      "video": {
+        "category": "동물",
+        "title": "카르파티아, 유럽의 마지막 원시림",
+        "date": "2026.05.08",
+        "thumbnail": "images/onboarding/bottom.png",
+        "description": "유럽에 남은 가장 큰 원시림 카르파티아. 사람 눈에 좀처럼 띄지 않는 유라시아스라소니를 무인 카메라로 기록했다."
+      }
+    },
+    {
+      "id": "sahara",
+      "region": "아프리카",
+      "name": "사하라 사막",
+      "coords": {
+        "x": 48.5,
+        "y": 52
+      },
+      "video": {
+        "category": "사진",
+        "title": "사하라, 별이 쏟아지는 밤",
+        "date": "2026.03.18",
+        "thumbnail": "images/onboarding/space_color.png",
+        "description": "모래 언덕 위에 누워 올려다본 하늘. 사막의 밤이 왜 지구에서 가장 어두운지 사진으로 보여 준다."
+      }
+    },
+    {
+      "id": "egypt",
+      "region": "아프리카",
+      "name": "이집트 나일강",
+      "coords": {
+        "x": 56.3,
+        "y": 49.5
+      },
+      "video": {
+        "category": "역사",
+        "title": "왕가의 계곡, 깨어난 미라",
+        "date": "2026.04.20",
+        "thumbnail": "images/magazine3.png",
+        "description": "3천 년 만에 열린 석관. 최신 스캔 기술이 붕대 아래 감춰져 있던 왕의 마지막 얼굴을 되살린다."
+      }
+    },
+    {
+      "id": "sudan",
+      "region": "아프리카",
+      "name": "수단 메로에",
+      "coords": {
+        "x": 56.5,
+        "y": 56
+      },
+      "video": {
+        "category": "역사",
+        "title": "수단 피라미드가 품은 미라의 비밀",
+        "date": "2026.05.14",
+        "thumbnail": "images/footer.png",
+        "description": "메로에의 모래 언덕 아래, 3천 년의 시간을 견뎌낸 왕족의 미라가 발굴됐다. 고대 쿠시 왕국의 마지막 비밀을 들려준다."
+      }
+    },
+    {
+      "id": "red_sea",
+      "region": "아프리카",
+      "name": "홍해",
+      "coords": {
+        "x": 59.3,
+        "y": 52.5
+      },
+      "video": {
+        "category": "동물",
+        "title": "홍해, 상어와 산호의 정원",
+        "date": "2026.06.12",
+        "thumbnail": "images/recommend3.png",
+        "description": "사막 사이에 낀 좁은 바다는 산호의 피난처다. 암초를 순찰하는 어린 상어를 따라 홍해 속으로 들어간다."
+      }
+    },
+    {
+      "id": "west_africa",
+      "region": "아프리카",
+      "name": "서아프리카 우림",
+      "coords": {
+        "x": 45,
+        "y": 58
+      },
+      "video": {
+        "category": "동물",
+        "title": "기니 우림의 초록 살모사",
+        "date": "2026.02.22",
+        "thumbnail": "images/magazine2.png",
+        "description": "나뭇가지처럼 꼼짝 않고 며칠을 기다리는 초록 살모사. 우림의 숨은 사냥꾼을 초근접 렌즈로 만난다."
+      }
+    },
+    {
+      "id": "congo",
+      "region": "아프리카",
+      "name": "콩고 분지",
+      "coords": {
+        "x": 52,
+        "y": 65
+      },
+      "video": {
+        "category": "자연",
+        "title": "콩고강, 지도에 없는 숲",
+        "date": "2026.01.08",
+        "thumbnail": "images/quiz.png",
+        "description": "위성 사진으로도 바닥이 보이지 않는 숲. 콩고강의 지류를 거슬러 올라 지도가 끝나는 곳까지 가 본다."
+      }
+    },
+    {
+      "id": "serengeti",
+      "region": "아프리카",
+      "name": "세렝게티",
+      "coords": {
+        "x": 57,
+        "y": 67
+      },
+      "video": {
+        "category": "동물",
+        "title": "사바나의 어린 사자들",
+        "date": "2026.06.02",
+        "thumbnail": "images/recommend2.png",
+        "description": "사바나의 어린 사자 무리가 처음으로 사냥을 배우며 무리의 규칙을 익혀가는 성장의 나날들을 기록했다."
+      }
+    },
+    {
+      "id": "namib",
+      "region": "아프리카",
+      "name": "나미브 사막",
+      "coords": {
+        "x": 51.5,
+        "y": 77
+      },
+      "video": {
+        "category": "사진",
+        "title": "나미브, 죽은 나무 위의 별",
+        "date": "2026.04.11",
+        "thumbnail": "images/onboarding/space_color.png",
+        "description": "900년 전 말라 죽은 나무들이 서 있는 데드블레이. 그 위로 남반구의 별이 원을 그린다."
+      }
+    },
+    {
+      "id": "south_africa",
+      "region": "아프리카",
+      "name": "남아프리카 해안",
+      "coords": {
+        "x": 54.5,
+        "y": 84.5
+      },
+      "video": {
+        "category": "동물",
+        "title": "간스바이, 상어의 바다",
+        "date": "2026.05.28",
+        "thumbnail": "images/recommend3.png",
+        "description": "두 대양이 만나는 남아프리카 끝자락. 상어 연구자와 함께 꼬리표를 달고 바다로 돌려보내는 하루를 담았다."
+      }
+    },
+    {
+      "id": "madagascar",
+      "region": "아프리카",
+      "name": "마다가스카르",
+      "coords": {
+        "x": 60,
+        "y": 75
+      },
+      "video": {
+        "category": "자연",
+        "title": "마다가스카르 산호 해변",
+        "date": "2026.03.07",
+        "thumbnail": "images/onboarding/sea_color.png",
+        "description": "세상 어디에도 없는 생물들의 섬. 썰물이 드러낸 산호 해변에서 마다가스카르의 바다를 걷는다."
+      }
+    },
+    {
+      "id": "turkey",
+      "region": "아시아",
+      "name": "튀르키예 이스탄불",
+      "coords": {
+        "x": 57.5,
+        "y": 42.5
+      },
+      "video": {
+        "category": "컬처",
+        "title": "이스탄불, 향신료 시장의 요리사",
+        "date": "2026.02.14",
+        "thumbnail": "images/map3_video.png",
+        "description": "두 대륙의 맛이 만나는 도시. 새벽 시장에서 주방까지, 한 요리사의 하루를 따라간다."
+      }
+    },
+    {
+      "id": "baikonur",
+      "region": "아시아",
+      "name": "카자흐스탄 바이코누르",
+      "coords": {
+        "x": 66,
+        "y": 33
+      },
+      "video": {
+        "category": "우주",
+        "title": "바이코누르, 우주로 가는 문",
+        "date": "2026.04.12",
+        "thumbnail": "images/banner2.png",
+        "description": "초원 한가운데 세워진 세계 최초의 우주기지. 발사를 앞둔 우주비행사의 마지막 일주일을 기록했다."
+      }
+    },
+    {
+      "id": "silk_road",
+      "region": "아시아",
+      "name": "중앙아시아 실크로드",
+      "coords": {
+        "x": 67.5,
+        "y": 41
+      },
+      "video": {
+        "category": "여행",
+        "title": "실크로드, 낡은 밴으로 달리다",
+        "date": "2026.06.28",
+        "thumbnail": "images/banner1.png",
+        "description": "옛 대상들의 길을 낡은 밴 한 대로 따라간다. 고개를 넘을 때마다 달라지는 사람과 풍경을 만난다."
+      }
+    },
+    {
+      "id": "siberia",
+      "region": "아시아",
+      "name": "시베리아 타이가",
+      "coords": {
+        "x": 74,
+        "y": 22
+      },
+      "video": {
+        "category": "동물",
+        "title": "타이가의 스라소니",
+        "date": "2026.01.23",
+        "thumbnail": "images/onboarding/bottom.png",
+        "description": "세계에서 가장 넓은 숲, 시베리아 타이가. 눈 덮인 침엽수림을 홀로 순찰하는 스라소니를 추적했다."
+      }
+    },
+    {
+      "id": "kamchatka",
+      "region": "아시아",
+      "name": "캄차카반도",
+      "coords": {
+        "x": 92,
+        "y": 25
+      },
+      "video": {
+        "category": "여행",
+        "title": "캄차카, 연어를 기다리는 강",
+        "date": "2026.07.11",
+        "thumbnail": "images/map2.png",
+        "description": "화산과 불곰의 땅 캄차카. 연어가 돌아오는 계절, 강 위에서 여름을 보내는 어부 가족을 만난다."
+      }
+    },
+    {
+      "id": "mongolia",
+      "region": "아시아",
+      "name": "몽골 초원",
+      "coords": {
+        "x": 77,
+        "y": 36
+      },
+      "video": {
+        "category": "여행",
+        "title": "몽골 초원, 무지개 아래에서",
+        "date": "2026.04.21",
+        "thumbnail": "images/banner1.png",
+        "description": "유목민 가족과 함께한 몽골 초원 횡단기. 소나기 뒤 초원을 가로지른 무지개 아래에서 유목의 삶을 마주한다."
+      }
+    },
+    {
+      "id": "sichuan",
+      "region": "아시아",
+      "name": "중국 쓰촨",
+      "coords": {
+        "x": 77,
+        "y": 46.5
+      },
+      "video": {
+        "category": "동물",
+        "title": "쓰촨 대나무숲의 판다",
+        "date": "2026.05.02",
+        "thumbnail": "images/onboarding/animal_color.png",
+        "description": "하루 14시간을 먹는 데 쓰는 대왕판다. 안개 낀 쓰촨의 대나무숲에서 야생 판다의 하루를 지켜봤다."
+      }
+    },
+    {
+      "id": "himalaya",
+      "region": "아시아",
+      "name": "히말라야",
+      "coords": {
+        "x": 71.5,
+        "y": 47.5
+      },
+      "video": {
+        "category": "사진",
+        "title": "히말라야, 세계의 지붕에서 본 밤",
+        "date": "2026.03.25",
+        "thumbnail": "images/onboarding/space_color.png",
+        "description": "해발 5천 미터 베이스캠프의 밤. 공기가 희박한 만큼 별은 더 가까워진다."
+      }
+    },
+    {
+      "id": "gir",
+      "region": "아시아",
+      "name": "인도 기르 숲",
+      "coords": {
+        "x": 68.5,
+        "y": 54
+      },
+      "video": {
+        "category": "동물",
+        "title": "기르 숲, 마지막 아시아사자",
+        "date": "2026.06.15",
+        "thumbnail": "images/recommend2.png",
+        "description": "한때 인도 전역을 누볐던 아시아사자는 이제 기르 숲에만 남았다. 새끼를 기르는 암사자 무리를 만난다."
+      }
+    },
+    {
+      "id": "korea",
+      "region": "아시아",
+      "name": "한반도 DMZ",
+      "coords": {
+        "x": 83.3,
+        "y": 41.5
+      },
+      "video": {
+        "category": "자연",
+        "title": "DMZ, 70년의 숲",
+        "date": "2026.06.25",
+        "thumbnail": "images/quiz.png",
+        "description": "사람의 발길이 끊긴 70년 동안 숲은 스스로 자랐다. 철책 사이에 남은 한반도의 원시림을 기록했다."
+      }
+    },
+    {
+      "id": "tokyo",
+      "region": "아시아",
+      "name": "일본 도쿄",
+      "coords": {
+        "x": 87.3,
+        "y": 40
+      },
+      "video": {
+        "category": "컬처",
+        "title": "도쿄, 장인의 새벽 주방",
+        "date": "2026.04.24",
+        "thumbnail": "images/map3_video.png",
+        "description": "손님이 오기 여섯 시간 전, 주방의 불은 이미 켜져 있다. 한 접시에 평생을 건 요리사들의 새벽을 담았다."
+      }
+    },
+    {
+      "id": "okinawa",
+      "region": "아시아",
+      "name": "일본 오키나와",
+      "coords": {
+        "x": 85.5,
+        "y": 49
+      },
+      "video": {
+        "category": "자연",
+        "title": "오키나와, 별모래 해변",
+        "date": "2026.02.27",
+        "thumbnail": "images/onboarding/sea_color.png",
+        "description": "모래알 하나하나가 별 모양인 해변. 산호초가 만들어 낸 작은 기적을 현미경과 함께 들여다본다."
+      }
+    },
+    {
+      "id": "southeast_asia",
+      "region": "아시아",
+      "name": "동남아시아 우림",
+      "coords": {
+        "x": 76,
+        "y": 57
+      },
+      "video": {
+        "category": "동물",
+        "title": "밀림 속 초록빛 눈동자",
+        "date": "2026.03.30",
+        "thumbnail": "images/magazine2.png",
+        "description": "동남아시아 우림에 서식하는 대나무살모사의 눈동자를 초근접 촬영했다. 진화가 빚어낸 정교한 사냥 도구를 담았다."
+      }
+    },
+    {
+      "id": "philippines",
+      "region": "아시아",
+      "name": "필리핀",
+      "coords": {
+        "x": 81,
+        "y": 57
+      },
+      "video": {
+        "category": "동물",
+        "title": "돈솔, 어린 상어를 돌려보내다",
+        "date": "2026.05.17",
+        "thumbnail": "images/recommend3.png",
+        "description": "그물에 걸린 어린 상어를 다시 바다로 돌려보내는 필리핀 어촌 사람들의 이야기."
+      }
+    },
+    {
+      "id": "borneo",
+      "region": "아시아",
+      "name": "보르네오",
+      "coords": {
+        "x": 79.5,
+        "y": 65
+      },
+      "video": {
+        "category": "자연",
+        "title": "보르네오, 숲의 사람이 사는 강",
+        "date": "2026.01.15",
+        "thumbnail": "images/quiz.png",
+        "description": "오랑우탄은 말레이어로 숲의 사람이다. 키나바탕안강을 따라 사라져 가는 그들의 숲을 찾아간다."
+      }
+    },
+    {
+      "id": "new_guinea",
+      "region": "오세아니아",
+      "name": "뉴기니",
+      "coords": {
+        "x": 86,
+        "y": 67
+      },
+      "video": {
+        "category": "동물",
+        "title": "뉴기니, 나무 위의 초록 뱀",
+        "date": "2026.04.05",
+        "thumbnail": "images/magazine2.png",
+        "description": "나뭇가지에 몸을 감고 비를 기다리는 초록 뱀. 지구에서 가장 덜 알려진 숲의 주인을 만난다."
+      }
+    },
+    {
+      "id": "outback",
+      "region": "오세아니아",
+      "name": "호주 아웃백",
+      "coords": {
+        "x": 82,
+        "y": 79
+      },
+      "video": {
+        "category": "사진",
+        "title": "아웃백, 남십자성 아래",
+        "date": "2026.06.09",
+        "thumbnail": "images/onboarding/space_color.png",
+        "description": "가장 가까운 마을까지 500km. 붉은 땅 위에서 남반구에서만 볼 수 있는 밤하늘을 담았다."
+      }
+    },
+    {
+      "id": "great_barrier_reef",
+      "region": "오세아니아",
+      "name": "그레이트배리어리프",
+      "coords": {
+        "x": 89.5,
+        "y": 75
+      },
+      "video": {
+        "category": "자연",
+        "title": "산호초의 작은 주민들",
+        "date": "2026.02.05",
+        "thumbnail": "images/onboarding/sea_color.png",
+        "description": "우주에서도 보이는 산호초, 그 안에서 눈에 잘 띄지 않는 작은 생명들이 암초를 지탱하는 방법."
+      }
+    },
+    {
+      "id": "new_zealand",
+      "region": "오세아니아",
+      "name": "뉴질랜드",
+      "coords": {
+        "x": 95,
+        "y": 87
+      },
+      "video": {
+        "category": "여행",
+        "title": "뉴질랜드, 양들의 초원과 등대",
+        "date": "2026.03.16",
+        "thumbnail": "images/onboarding/nature_color.png",
+        "description": "사람보다 양이 많은 나라의 남쪽 끝. 초원이 바다와 만나는 곳에 선 등대를 찾아간다."
+      }
+    },
+    {
+      "id": "tonga",
+      "region": "오세아니아",
+      "name": "남태평양 통가",
+      "coords": {
+        "x": 97,
+        "y": 73
+      },
+      "video": {
+        "category": "동물",
+        "title": "태평양의 혹등고래",
+        "date": "2026.06.09",
+        "thumbnail": "images/banner4.png",
+        "description": "매년 남태평양을 회유하는 혹등고래 무리를 따라가며 그들의 노랫소리와 이동 경로를 추적했다."
+      }
     }
   ],
   "magazine": [

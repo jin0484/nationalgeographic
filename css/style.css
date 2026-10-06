@@ -728,23 +728,25 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
   cursor: pointer;
 }
 .map_image { width: 100%; height: auto; opacity: 1; filter: saturate(0.85) brightness(0.9); }
-/* Tints only the dots of the hovered/selected region: the layer is masked by the map artwork itself
-   and clipped (inline clip-path set from JS) to that region's zone. */
-.map_highlight {
+/* Small disc that lights up just the few map dots under the pointer / the clicked spot. It is masked
+   by the map artwork; JS moves it and offsets the mask so its dots line up with the image below. */
+.map_glow {
   position: absolute;
-  inset: 0;
+  left: 0;
+  top: 0;
+  width: max(34px, 5%);
+  aspect-ratio: 1;
+  border-radius: 50%;
   background: var(--color_accent);
   -webkit-mask-image: url("../images/map.png");
   mask-image: url("../images/map.png");
-  -webkit-mask-size: 100% 100%;
-  mask-size: 100% 100%;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
   opacity: 0;
   pointer-events: none;
   transition: opacity var(--transition_base);
 }
-.map_highlight.is_visible { opacity: 1; }
+.map_glow.is_visible { opacity: 1; }
 
 /* ==========================================================================
    Quiz
