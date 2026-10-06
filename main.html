@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>National Geographic</title>
+<meta name="description" content="내셔널지오그래픽 메인페이지 - 자연, 과학, 인류 역사에 관한 고화질 아티클과 영상을 탐색하세요." />
+<link rel="icon" href="images/logo/logo_y.png" />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" />
+<link rel="stylesheet" href="css/variables.css" />
+<link rel="stylesheet" href="css/vendor/swiper-bundle.min.css" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<a class="skip_link" href="#main_content">본문 바로가기</a>
+
+<header class="header" id="header">
+  <div class="header_inner">
+    <a class="header_logo" href="main.html" aria-label="National Geographic 홈으로 이동">
+      <img src="images/logo/logo_y.png" alt="National Geographic" width="48" height="48" />
+    </a>
+
+    <nav class="gnb" id="gnb" aria-label="주요 카테고리">
+      <ul class="gnb_list">
+        <li><a href="#" class="gnb_link is_featured">디즈니플러스</a></li>
+        <li><a href="#magazine" class="gnb_link">매거진</a></li>
+        <li><a href="#magazine" class="gnb_link">카테고리</a></li>
+        <li><a href="#" class="gnb_link">커뮤니티</a></li>
+        <li><a href="#" class="gnb_link">설문조사</a></li>
+        <li><a href="#" class="gnb_link">이벤트</a></li>
+        <li><a href="#" class="gnb_link">MY</a></li>
+      </ul>
+    </nav>
+
+    <div class="header_actions">
+      <a href="#" class="header_login_link">Login</a>
+      <button type="button" class="icon_btn" id="search_toggle_btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="search_panel">
+        <img src="images/icon/search.svg" alt="" width="18" height="18" />
+        <span class="sr_only">검색 열기</span>
+      </button>
+      <button type="button" class="icon_btn" id="menu_toggle_btn" aria-haspopup="true" aria-expanded="false" aria-controls="mobile_menu">
+        <span class="hamburger_bar"></span>
+        <span class="hamburger_bar"></span>
+        <span class="hamburger_bar"></span>
+        <span class="sr_only">메뉴 열기</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile_menu" id="mobile_menu" hidden>
+  <div class="mobile_menu_scrim" id="mobile_menu_scrim" aria-hidden="true"></div>
+  <div class="mobile_menu_panel" role="dialog" aria-modal="true" aria-label="메뉴">
+    <div class="mobile_menu_header">
+      <span class="mobile_menu_logo" aria-hidden="true">
+        <img src="images/logo/logo_y.png" alt="" width="32" height="42" />
+      </span>
+      <button type="button" class="mobile_menu_close_btn" id="mobile_menu_close_btn">
+        <svg width="16" height="16" viewBox="0 0 16.3235 16.3235" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M15.5735 0.75L0.75 15.5735M0.75 0.75L15.5735 15.5735" stroke="#FFCE00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="sr_only">메뉴 닫기</span>
+      </button>
+    </div>
+    <ul class="mobile_menu_list">
+      <li><a href="#" class="mobile_menu_link">디즈니플러스</a></li>
+      <li><a href="#magazine" class="mobile_menu_link">매거진</a></li>
+      <li><a href="#magazine" class="mobile_menu_link">카테고리</a></li>
+      <li><a href="#" class="mobile_menu_link">커뮤니티</a></li>
+      <li><a href="#" class="mobile_menu_link">설문조사</a></li>
+      <li><a href="#" class="mobile_menu_link">이벤트</a></li>
+      <li><a href="#" class="mobile_menu_link">MY</a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="search_overlay" id="search_panel" role="dialog" aria-modal="true" aria-label="검색" hidden>
+  <div class="search_overlay_header">
+    <a class="header_logo" href="main.html" aria-label="National Geographic 홈으로 이동">
+      <img src="images/logo/logo_y.png" alt="National Geographic" width="48" height="48" />
+    </a>
+
+    <nav class="gnb search_overlay_nav" aria-label="주요 카테고리">
+      <ul class="gnb_list">
+        <li><a href="#" class="gnb_link is_featured">디즈니플러스</a></li>
+        <li><a href="#magazine" class="gnb_link">매거진</a></li>
+        <li><a href="#magazine" class="gnb_link">카테고리</a></li>
+        <li><a href="#" class="gnb_link">커뮤니티</a></li>
+        <li><a href="#" class="gnb_link">설문조사</a></li>
+        <li><a href="#" class="gnb_link">이벤트</a></li>
+        <li><a href="#" class="gnb_link">MY</a></li>
+      </ul>
+    </nav>
+
+    <div class="search_overlay_actions">
+      <a href="#" class="search_overlay_login">Login</a>
+      <button type="button" class="search_overlay_close_btn" id="search_close_btn">
+        <span aria-hidden="true">&times;</span>
+        <span class="sr_only">검색 닫기</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="search_overlay_body">
+    <form class="search_field" id="search_form" role="search">
+      <label class="sr_only" for="search_input">아티클 검색</label>
+      <input type="search" id="search_input" name="q" class="search_field_input" placeholder="검색어를 입력하세요" autocomplete="off" />
+      <button type="submit" class="search_field_submit_btn" id="search_submit_btn" disabled>
+        <img src="images/icon/search.svg" alt="" width="18" height="18" />
+        <span class="sr_only">검색</span>
+      </button>
+    </form>
+    <ul class="search_suggestions" id="search_recent_list" aria-label="추천 검색어"></ul>
+  </div>
+</div>
+
+<main id="main_content">
+
+  <section class="banner_section" aria-label="주요 배너">
+    <div class="banner_slider" id="banner_slider">
+      <div class="banner_track" id="banner_track"></div>
+
+      <div class="banner_bottom_overlay">
+        <div class="banner_dots" id="banner_dots" role="tablist" aria-label="배너 페이지"></div>
+
+        <div class="banner_content_track" id="banner_content_track"></div>
+      </div>
+
+      <button type="button" class="banner_arrow banner_arrow_prev" id="banner_prev_btn">
+        <img src="images/icon/left_arrow.svg" alt="" width="9" height="16" />
+        <span class="sr_only">이전 배너</span>
+      </button>
+      <button type="button" class="banner_arrow banner_arrow_next" id="banner_next_btn">
+        <img src="images/icon/right_arrow.svg" alt="" width="9" height="16" />
+        <span class="sr_only">다음 배너</span>
+      </button>
+
+      <div class="banner_bottom_bar">
+        <div class="banner_mini_arrows">
+          <button type="button" class="banner_mini_arrow" id="banner_mini_prev_btn">
+            <img src="images/icon/left_arrow.svg" alt="" width="9" height="16" />
+            <span class="sr_only">이전 배너</span>
+          </button>
+          <button type="button" class="banner_mini_arrow" id="banner_mini_next_btn">
+            <img src="images/icon/right_arrow.svg" alt="" width="9" height="16" />
+            <span class="sr_only">다음 배너</span>
+          </button>
+        </div>
+        <div class="banner_preview_viewport">
+          <div class="banner_preview_track" id="banner_preview_track" role="tablist" aria-label="배너 미리보기"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="brand_typo_section" aria-hidden="true">
+    <img src="images/icon/down_arrow.svg" class="brand_typo_arrow" alt="" width="58" height="30" />
+    <div class="brand_typo_wrap" id="brand_typo_wrap">
+      <div class="brand_typo_track brand_typo_base">
+        <span class="brand_typo_word">NATIONALGEOGRAPHIC</span>
+        <span class="brand_typo_word">NATIONALGEOGRAPHIC</span>
+        <span class="brand_typo_word">NATIONALGEOGRAPHIC</span>
+        <span class="brand_typo_word">NATIONALGEOGRAPHIC</span>
+        <span class="brand_typo_word">NATIONALGEOGRAPHIC</span>
+        <span class="brand_typo_word">NATIONALGEOGRAPHIC</span>
+        <span class="brand_typo_word">NATIONALGEOGRAPHIC</span>
+        <span class="brand_typo_word">NATIONALGEOGRAPHIC</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section recommend_section" id="recommend" aria-labelledby="recommend_heading">
+    <div class="section_inner">
+      <h2 class="section_heading" id="recommend_heading">Recommend</h2>
+      <p class="section_desc">귀여운 동물 영상을 좋아하는 사용자님을 위해 준비했어요!</p>
+      <div class="recommend_accordion" id="recommend_grid" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="section todays_exp_section" id="todays_exp" aria-labelledby="todays_exp_heading">
+    <div class="section_inner">
+      <h2 class="section_heading" id="todays_exp_heading">Today's Exp</h2>
+      <p class="section_desc">원하는 지역을 클릭하여 탐험을 즐겨요!</p>
+
+      <div class="todays_exp_map" id="todays_exp_map">
+        <img src="images/map.png" alt="세계 지도" class="map_image" />
+        <div class="map_pin_layer" id="map_pin_layer"></div>
+
+        <div class="exp_popover" id="exp_popover" role="dialog" aria-modal="false" aria-labelledby="exp_popover_title" hidden>
+          <button type="button" class="exp_popover_close_btn" id="exp_popover_close_btn">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr_only">닫기</span>
+          </button>
+          <div class="exp_popover_thumb">
+            <img id="exp_popover_thumb_img" src="" alt="" />
+            <span class="card_play_badge" aria-hidden="true"></span>
+          </div>
+          <div class="exp_popover_body">
+            <div class="exp_popover_heading">
+              <h3 class="exp_popover_title" id="exp_popover_title"></h3>
+              <span class="exp_popover_tag" id="exp_popover_tag"></span>
+            </div>
+            <p class="exp_popover_desc" id="exp_popover_desc"></p>
+            <a href="#" class="exp_popover_cta" id="exp_popover_cta">
+              see now
+              <span class="exp_popover_cta_icon" aria-hidden="true">
+                <img src="images/icon/right_arrow.svg" alt="" width="9" height="16" />
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section magazine_section" id="magazine" aria-labelledby="magazine_heading">
+    <div class="section_inner">
+      <h2 class="section_heading" id="magazine_heading">Magazine</h2>
+
+      <div class="magazine_carousel">
+        <button type="button" class="magazine_arrow magazine_arrow_prev" id="magazine_prev_btn">
+          <img src="images/icon/left_arrow.svg" alt="" width="9" height="16" />
+          <span class="sr_only">이전 매거진</span>
+        </button>
+
+        <div class="magazine_track" id="magazine_grid" aria-live="polite"></div>
+
+        <button type="button" class="magazine_arrow magazine_arrow_next" id="magazine_next_btn">
+          <img src="images/icon/right_arrow.svg" alt="" width="9" height="16" />
+          <span class="sr_only">다음 매거진</span>
+        </button>
+      </div>
+
+      <!-- Mobile-only: Swiper "cards" effect stack (desktop keeps the coverflow track above) -->
+      <div class="magazine_mobile_swiper swiper" id="magazine_mobile_swiper">
+        <div class="swiper-wrapper" id="magazine_mobile_swiper_wrapper"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section quiz_section" id="quiz" aria-labelledby="quiz_heading">
+    <div class="section_inner quiz_inner">
+      <h2 class="section_heading" id="quiz_heading">Quiz</h2>
+      <p class="section_desc">지구와 자연에 대해 얼마나 알고 있나요?</p>
+      <div class="quiz_card" id="quiz_card" aria-live="polite"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <img src="images/footer.png" alt="" class="footer_bg_image" />
+  <div class="footer_inner">
+    <div class="footer_top">
+      <h2 class="footer_logo_text">NATIONALGEOGRAPHIC</h2>
+      <p class="footer_tagline">One step to the edge of impossible and then, further.</p>
+    </div>
+    <div class="footer_bottom">
+      <div class="footer_contact_list">
+        <div class="footer_contact_item">
+          <span class="footer_contact_label">의류</span>
+          <a class="footer_contact_value" href="tel:0215882906">02.1588.2906</a>
+        </div>
+        <div class="footer_contact_item">
+          <span class="footer_contact_label">트래블러 매거진</span>
+          <a class="footer_contact_value" href="tel:0027638600">02.763.8600</a>
+        </div>
+        <div class="footer_contact_item">
+          <span class="footer_contact_label">방송</span>
+          <a class="footer_contact_value" href="tel:0234902742">02.3490.2742</a>
+        </div>
+        <div class="footer_contact_item">
+          <span class="footer_contact_label">모바일 액세서리</span>
+          <a class="footer_contact_value" href="tel:0806431234">080.643.1234</a>
+        </div>
+        <div class="footer_contact_item">
+          <span class="footer_contact_label">매거진</span>
+          <a class="footer_contact_value" href="tel:0220048800">02.2004.8800</a>
+        </div>
+      </div>
+      <p class="footer_copyright">
+        &copy; National Geographic Partners LLC. All rights reserved. NATIONAL GEOGRAPHIC
+        and Yellow Border Design are trademarks of National Geographic Society, used under license.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<div class="floating_actions">
+  <button type="button" class="ai_chat_btn" id="ai_chat_btn">
+    <img src="images/icon/aichat.svg" alt="" width="22" height="22" />
+    <span class="floating_btn_label" aria-hidden="true">AI</span>
+    <span class="sr_only">AI 챗봇 열기</span>
+  </button>
+  <button type="button" class="scroll_top_btn" id="scroll_top_btn" hidden>
+    <img src="images/icon/Arrowup.svg" alt="" width="14" height="18" />
+    <span class="floating_btn_label" aria-hidden="true">TOP</span>
+    <span class="sr_only">맨 위로 이동</span>
+  </button>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="assertive" hidden></div>
+
+<div class="mouse_glow" id="mouse_glow" aria-hidden="true"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="js/vendor/swiper-bundle.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

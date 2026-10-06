@@ -1,0 +1,282 @@
+/* ==========================================================================
+   Onboarding (Figma: 온보딩 2263:2554, 1920 x 4426)
+   ========================================================================== */
+
+/* --u = 1px of the 1920px-wide Figma frame, so the scrolling tile collage keeps its proportions at any width */
+.onboarding_page {
+  --u: calc(100vw / 1920);
+  padding-top: 0;
+}
+/* style.css sets overflow-x: hidden on html/body, which turns body into a scroll container and breaks
+   position: sticky. clip hides the horizontal overflow without creating one. */
+html:has(.onboarding_page),
+.onboarding_page { overflow-x: clip; }
+
+.onboarding {
+  position: relative;
+  background: var(--color_bg);
+}
+
+/* ---- Explore: tiles scroll with the page, logo + CTA stay pinned to the viewport centre ---- */
+.onboarding_explore {
+  position: relative;
+  height: calc(2286 * var(--u));
+  min-height: 100vh;
+  margin-top: calc(40 * var(--u));
+}
+
+.onboarding_hero {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.onboarding_hero_inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 31px;
+  width: 364px;
+  max-width: 70vw;
+  pointer-events: auto;
+}
+
+/* Logo PNG is a 2500x2500 square with transparent margins; Figma crops it into a 364x109 box */
+.onboarding_logo {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 364 / 109;
+  overflow: hidden;
+  filter: drop-shadow(3px 4px 4px rgba(0, 0, 0, 0.25));
+}
+.onboarding_logo img {
+  position: absolute;
+  left: -4.47%;
+  top: -130.91%;
+  width: 108.62%;
+  height: 362.66%;
+  max-width: none;
+}
+
+.onboarding_cta_btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 196px;
+  height: 38px;
+  border: 1px solid #fff09f;
+  border-radius: 40px;
+  background: linear-gradient(to right, rgba(247, 215, 48, 0.27), rgba(255, 240, 159, 0.27));
+  color: #fffae2;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: normal;
+  white-space: nowrap;
+  transition: background var(--transition_base);
+}
+.onboarding_cta_btn:hover {
+  background: linear-gradient(to right, rgba(247, 215, 48, 0.45), rgba(255, 240, 159, 0.45));
+}
+
+/* Tiles are the Figma component exports used as-is: the greyscale variant (scrim + label baked in)
+   and the colour hover variant (Figma: 호버 4005:627). */
+.onboarding_tile { position: absolute; }
+.onboarding_tile img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+}
+.onboarding_tile_color {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.onboarding_tile:hover .onboarding_tile_color { opacity: 1; }
+
+.onboarding_tile_animal {
+  left: calc(237 * var(--u));
+  top: 0;
+  width: calc(591 * var(--u));
+  height: calc(745 * var(--u));
+  /* The greyscale export carries the component's white backing on its left 1px, right 2px and bottom 4px:
+     clip those strips (plus ~2px so no white bleeds in when the tile is scaled down) */
+  clip-path: inset(0 0.7% 0.8% 0.5%);
+}
+/* 588 x 741 inside 591 x 745 */
+.onboarding_tile_animal .onboarding_tile_color {
+  inset: 0 auto auto 0.17%;
+  width: 99.49%;
+  height: 99.46%;
+}
+
+.onboarding_tile_sea {
+  right: 0;
+  top: calc(488 * var(--u));
+  width: calc(825 * var(--u));
+  height: calc(380 * var(--u));
+}
+
+.onboarding_tile_nature {
+  left: calc(-1 * var(--u));
+  top: calc(1118 * var(--u));
+  width: calc(951 * var(--u));
+  height: calc(712 * var(--u));
+  /* Same white backing here, on the right 2px and bottom 4px */
+  clip-path: inset(0 0.45% 0.85% 0);
+}
+/* 949 x 708 inside 951 x 712 */
+.onboarding_tile_nature .onboarding_tile_color {
+  inset: 0 auto auto 0;
+  width: 99.79%;
+  height: 99.44%;
+}
+
+.onboarding_tile_space {
+  left: calc(1216 * var(--u));
+  top: calc(1531 * var(--u));
+  width: calc(465 * var(--u));
+  height: calc(755 * var(--u));
+}
+
+/* ---- About ---- */
+.onboarding_about {
+  display: flex;
+  flex-direction: column;
+  gap: 100px;
+  margin-top: calc(285 * var(--u));
+  padding-left: calc(645 * var(--u));
+  color: #f3f3f3;
+}
+.onboarding_about_item {
+  position: relative;
+  width: 686px;
+  min-height: 143px;
+  padding-left: 116px;
+}
+.onboarding_about_item_magazine {
+  width: 821px;
+  min-height: 154px;
+  padding-left: 120px;
+}
+
+/* Icon PNGs carry transparent padding; Figma crops them inside these boxes */
+.onboarding_about_icon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: hidden;
+}
+.onboarding_about_icon img {
+  position: absolute;
+  max-width: none;
+}
+.onboarding_about_icon_frame {
+  width: 86px;
+  aspect-ratio: 120 / 201;
+}
+.onboarding_about_icon_frame img {
+  left: -30.71%;
+  top: -17.57%;
+  width: 151.66%;
+  height: 135.85%;
+}
+.onboarding_about_icon_magazine {
+  top: 10px;
+  width: 91px;
+  aspect-ratio: 112 / 170;
+}
+.onboarding_about_icon_magazine img {
+  left: -20.9%;
+  top: -29.26%;
+  width: 142.48%;
+  height: 163.14%;
+}
+
+.onboarding_about_title {
+  padding-top: 6px;
+  font-family: var(--font_body);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 29px;
+  white-space: nowrap;
+}
+.onboarding_about_item_magazine .onboarding_about_title { padding-top: 0; }
+.onboarding_about_desc {
+  margin-top: 15px;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+/* ---- Outro ---- */
+.onboarding_outro {
+  position: relative;
+  height: calc(1022 * var(--u));
+  min-height: 420px;
+  margin-top: calc(153 * var(--u));
+  overflow: hidden;
+}
+.onboarding_outro_bg {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: calc(976 * var(--u));
+  min-height: 400px;
+  object-fit: cover;
+  object-position: bottom;
+  opacity: 0.7;
+}
+.onboarding_outro_scrim {
+  position: absolute;
+  inset: 0 0 calc(8 * var(--u)) 0;
+  background: linear-gradient(to bottom, #151515, rgba(21, 21, 21, 0.89) 33.173%, rgba(21, 21, 21, 0.2));
+}
+.onboarding_outro_cta {
+  position: absolute;
+  left: 50%;
+  bottom: calc(342 * var(--u));
+  height: 40px;
+  transform: translateX(-50%);
+}
+
+/* ---- Below the Figma desktop width the about copy no longer fits beside its 645px indent ---- */
+@media (max-width: 1500px) {
+  .onboarding_about {
+    align-items: center;
+    padding: 0 var(--space_3);
+  }
+}
+
+@media (max-width: 900px) {
+  .onboarding_about { gap: 64px; align-items: stretch; }
+  .onboarding_about_item,
+  .onboarding_about_item_magazine { width: auto; }
+  .onboarding_about_title { white-space: normal; }
+  .onboarding_about_desc br { display: none; }
+}
+
+@media (max-width: 767px) {
+  /* Mobile has no Figma frame: enlarge the collage (frame treated as 1000px wide) and re-seat the tiles */
+  .onboarding_page { --u: calc(100vw / 1000); }
+  .onboarding_explore { height: calc(3000 * var(--u)); }
+  .onboarding_tile_animal { left: calc(60 * var(--u)); }
+  .onboarding_tile_sea { top: calc(900 * var(--u)); width: calc(760 * var(--u)); height: calc(350 * var(--u)); }
+  .onboarding_tile_nature { top: calc(1400 * var(--u)); width: calc(800 * var(--u)); height: calc(599 * var(--u)); }
+  .onboarding_tile_space { left: auto; right: calc(60 * var(--u)); top: calc(2150 * var(--u)); }
+
+  .onboarding_about { margin-top: 120px; }
+  .onboarding_about_item,
+  .onboarding_about_item_magazine { padding-left: 80px; }
+  .onboarding_about_icon_frame { width: 56px; }
+  .onboarding_about_icon_magazine { width: 60px; top: 6px; }
+  .onboarding_about_title { font-size: 18px; line-height: 24px; }
+
+  .onboarding_outro { margin-top: 80px; }
+  .onboarding_outro_cta { bottom: 120px; }
+}
