@@ -1299,6 +1299,27 @@
     });
   }
 
+  // Header slides away while scrolling down and comes back as soon as the page is scrolled up
+  function initHeaderAutoHide() {
+    const header = document.getElementById('header');
+    if (!header) return;
+
+    const DELTA_THRESHOLD = 4; // ignore sub-pixel jitter from the smoothed wheel scroll
+    let lastY = window.scrollY;
+
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      const delta = y - lastY;
+      if (Math.abs(delta) < DELTA_THRESHOLD) return;
+      lastY = y;
+      // Never hide at the very top, where the header sits in its own reserved space
+      header.classList.toggle('is_hidden', delta > 0 && y > header.offsetHeight);
+    }, { passive: true });
+
+    // Keyboard users tabbing into the header must be able to see it
+    header.addEventListener('focusin', () => header.classList.remove('is_hidden'));
+  }
+
   function initScrollTopButton() {
     const btn = document.getElementById('scroll_top_btn');
     if (!btn) return;
@@ -1427,6 +1448,7 @@
     if (searchInput) searchInput.addEventListener('input', handleSearchInputChange);
 
     initSmoothWheelScroll();
+    initHeaderAutoHide();
     initScrollTopButton();
     initMouseGlow();
     initApp();

@@ -107,7 +107,10 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
   right: 0;
   width: 100%;
   z-index: 100;
+  transition: transform 0.35s ease;
 }
+/* Slides out above the viewport while scrolling down, back in on scrolling up (toggled from JS) */
+.header.is_hidden { transform: translateY(calc(-100% - var(--header_top_gap))); }
 
 .header_inner {
   max-width: var(--container_max);
