@@ -1486,7 +1486,13 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
   .magazine_section .section_heading { font-size: 45px; }
   .quiz_section .section_heading { font-size: 45px; }
 
-  .todays_exp_map { max-width: 960px; margin: 80px auto 0; }
+  /* Map is as large as fits on one screen: at most 100px short of each viewport edge, and never taller
+     than the space under the fixed header (1.7193 = map.png width / height) */
+  .todays_exp_section .section_inner { max-width: none; padding: 0 100px; }
+  .todays_exp_map {
+    width: min(100%, max(600px, calc((100vh - var(--header_height) - var(--header_top_gap) - 48px) * 1.7193)));
+    margin: 80px auto 0;
+  }
 
   /* Magazine carousel: coverflow-style stacked cards */
   .magazine_arrow { display: flex; }
