@@ -11,17 +11,26 @@
 <link rel="stylesheet" href="css/variables.css" />
 <link rel="stylesheet" href="css/style.css" />
 <link rel="stylesheet" href="css/onboarding.css" />
+<script>document.documentElement.classList.add('is_splash_active');</script>
 </head>
 <body class="onboarding_page">
 <a class="skip_link" href="main.html">메인으로 바로가기</a>
+
+<div class="splash" id="splash" role="img" aria-label="National Geographic">
+  <div class="brand_lockup splash_lockup">
+    <div class="brand_mark splash_mark"><img src="images/logo/logo_y.png" alt="" /></div>
+    <div class="brand_word splash_word"><div class="brand_word_inner splash_word_inner"><img src="images/onboarding/logo_main.png" alt="" /></div></div>
+  </div>
+</div>
 
 <main class="onboarding" id="onboarding">
 
   <section class="onboarding_explore" aria-label="내셔널지오그래픽 탐색 시작">
     <div class="onboarding_hero">
       <div class="onboarding_hero_inner">
-        <h1 class="onboarding_logo">
-          <img src="images/onboarding/logo_main.png" alt="National Geographic" />
+        <h1 class="brand_lockup onboarding_logo">
+          <span class="brand_mark"><img src="images/logo/logo_y.png" alt="" /></span>
+          <span class="brand_word"><span class="brand_word_inner"><img src="images/onboarding/logo_main.png" alt="National Geographic" /></span></span>
         </h1>
         <a class="onboarding_cta_btn" href="main.html">탐색 하러 가기</a>
       </div>
@@ -100,5 +109,7 @@
   </section>
 
 </main>
+
+<script src="js/onboarding.js"></script>
 </body>
 </html>
