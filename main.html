@@ -185,7 +185,8 @@
 
       <div class="todays_exp_map" id="todays_exp_map">
         <img src="images/map.png" alt="세계 지도" class="map_image" />
-        <div class="map_pin_layer" id="map_pin_layer"></div>
+        <div class="map_highlight" id="map_highlight" aria-hidden="true"></div>
+        <div class="map_region_list" id="map_region_list"></div>
 
         <div class="exp_popover" id="exp_popover" role="dialog" aria-modal="false" aria-labelledby="exp_popover_title" hidden>
           <button type="button" class="exp_popover_close_btn" id="exp_popover_close_btn">
@@ -197,6 +198,7 @@
             <span class="card_play_badge" aria-hidden="true"></span>
           </div>
           <div class="exp_popover_body">
+            <p class="exp_popover_region" id="exp_popover_region"></p>
             <div class="exp_popover_heading">
               <h3 class="exp_popover_title" id="exp_popover_title"></h3>
               <span class="exp_popover_tag" id="exp_popover_tag"></span>

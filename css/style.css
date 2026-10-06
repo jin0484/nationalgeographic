@@ -725,84 +725,26 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
   position: relative;
   width: 100%;
   margin-top: 80px;
-}
-.map_image { width: 100%; height: auto; opacity: 1; filter: saturate(0.85) brightness(0.9); }
-.map_pin_layer { position: absolute; inset: 0; }
-
-.map_pin {
-  position: absolute;
-  transform: translate(-50%, -100%);
-  width: 22px; height: 30px;
-  padding: 0;
-  border: none;
-  background: transparent;
   cursor: pointer;
 }
-.map_pin_shape {
+.map_image { width: 100%; height: auto; opacity: 1; filter: saturate(0.85) brightness(0.9); }
+/* Tints only the dots of the hovered/selected region: the layer is masked by the map artwork itself
+   and clipped (inline clip-path set from JS) to that region's zone. */
+.map_highlight {
   position: absolute;
   inset: 0;
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 30'%3E%3Cpath d='M11 0C4.925 0 0 4.925 0 11c0 8.25 11 19 11 19s11-10.75 11-19C22 4.925 17.075 0 11 0z' fill='white'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 30'%3E%3Cpath d='M11 0C4.925 0 0 4.925 0 11c0 8.25 11 19 11 19s11-10.75 11-19C22 4.925 17.075 0 11 0z' fill='white'/%3E%3C/svg%3E");
+  background: var(--color_accent);
+  -webkit-mask-image: url("../images/map.png");
+  mask-image: url("../images/map.png");
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  -webkit-mask-position: center bottom;
-  mask-position: center bottom;
-  background: rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(4px) saturate(1.4);
-  -webkit-backdrop-filter: blur(4px) saturate(1.4);
-  box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.7),
-    inset 0 -8px 10px rgba(255, 255, 255, 0.15);
-  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));
-}
-.map_pin_dot {
-  position: absolute;
-  left: 50%;
-  top: 36.7%;
-  width: 9px; height: 9px;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  background: #ffffff;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
-}
-.map_pin::before {
-  content: '';
-  position: absolute;
-  left: 50%;
-  bottom: -1px;
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  transform: translateX(-50%);
-  box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.6);
-  animation: map_pin_pulse 2.4s ease-out infinite;
-  z-index: -1;
-}
-.map_pin::after {
-  content: attr(data-label);
-  position: absolute;
-  left: 50%;
-  bottom: calc(100% + 8px);
-  transform: translateX(-50%);
-  background: var(--color_bg_elevated_2);
-  color: var(--color_text);
-  font-size: 12px;
-  white-space: nowrap;
-  padding: 4px 10px;
-  border-radius: var(--radius_sm);
   opacity: 0;
   pointer-events: none;
   transition: opacity var(--transition_base);
 }
-.map_pin:hover::after,
-.map_pin:focus-visible::after { opacity: 1; }
-
-@keyframes map_pin_pulse {
-  0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.55); }
-  70% { box-shadow: 0 0 0 12px rgba(255, 255, 255, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
-}
+.map_highlight.is_visible { opacity: 1; }
 
 /* ==========================================================================
    Quiz
@@ -1284,6 +1226,7 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
   transform: translateY(8px);
   pointer-events: none;
   transition: opacity 0.2s ease, transform 0.2s ease;
+  cursor: auto;
 }
 .exp_popover[hidden] { display: none; }
 .exp_popover.is_open { opacity: 1; transform: translateY(0); pointer-events: auto; }
@@ -1314,6 +1257,12 @@ h1, h2, h3 { font-family: var(--font_heading); font-weight: 700; }
 .exp_popover_thumb .card_play_badge { width: 44px; height: 44px; }
 
 .exp_popover_body { padding: var(--space_2) var(--space_1) var(--space_1); }
+.exp_popover_region {
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color_accent);
+}
 .exp_popover_heading {
   display: flex;
   align-items: center;
