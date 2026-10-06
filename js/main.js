@@ -416,6 +416,7 @@
   // Dozens of small spots (land and sea) are scattered over the map, each with its own video.
   // A click recommends the spot nearest to it, so every little area of the map hides something different.
   const EXP_KEY_STEP = 2; // % of the map moved per arrow-key press
+  const EXP_NOTICE_DURATION_MS = 2500;
 
   let expSpots = [];
   let activeExpPoint = null; // clicked point, { x, y } in % of the map, while the popover is open
@@ -545,6 +546,8 @@
     document.getElementById('exp_popover_tag').textContent = video.category;
     document.getElementById('exp_popover_desc').textContent = video.description || '';
 
+    hideExpNotice();
+
     // Restart the entrance transition, including when the popover is already open for another spot
     popover.classList.remove('is_open');
     popover.hidden = false;
@@ -555,6 +558,26 @@
 
     document.addEventListener('keydown', handlePopoverKeydown);
     document.addEventListener('pointerdown', handlePopoverOutsideClick);
+  }
+
+  let expNoticeTimer = null;
+
+  function hideExpNotice() {
+    const notice = document.getElementById('exp_popover_notice');
+    if (expNoticeTimer) clearTimeout(expNoticeTimer);
+    expNoticeTimer = null;
+    if (notice) notice.classList.remove('is_visible');
+  }
+
+  // The videos have no detail page yet, so "see now" answers with a small "not ready" bubble
+  function handleExpCtaClick(event) {
+    event.preventDefault();
+    const notice = document.getElementById('exp_popover_notice');
+    if (!notice) return;
+    if (expNoticeTimer) clearTimeout(expNoticeTimer);
+    notice.textContent = '아직 준비 중이에요!';
+    notice.classList.add('is_visible');
+    expNoticeTimer = setTimeout(hideExpNotice, EXP_NOTICE_DURATION_MS);
   }
 
   function positionExpPopover(popover, anchor) {
@@ -589,6 +612,7 @@
     popover.classList.remove('is_open');
     popover.hidden = true;
     activeExpPoint = null;
+    hideExpNotice();
     updateExpGlows();
     document.removeEventListener('keydown', handlePopoverKeydown);
     document.removeEventListener('pointerdown', handlePopoverOutsideClick);
@@ -1438,6 +1462,7 @@
       link.addEventListener('click', closeMobileMenu);
     });
     addClickListener('exp_popover_close_btn', closeExpPopover);
+    addClickListener('exp_popover_cta', handleExpCtaClick);
     addClickListener('magazine_prev_btn', handleMagazinePrev);
     addClickListener('magazine_next_btn', handleMagazineNext);
 
