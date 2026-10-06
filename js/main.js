@@ -653,13 +653,18 @@
   /* Quiz                                                                 */
   /* ------------------------------------------------------------------ */
 
+  const QUIZ_CHOICE_MARKS = ['A', 'B', 'C', 'D', 'E', 'F'];
+
   const quizState = {
     questions: [],
     index: 0,
     selectedIndex: null,
     isAnswered: false,
-    score: 0
+    score: 0,
+    results: [] // per answered question: true (correct) / false (wrong)
   };
+
+  const padQuizNumber = (value) => String(value).padStart(2, '0');
 
   function initQuiz(questions) {
     quizState.questions = questions || [];
@@ -667,7 +672,32 @@
     quizState.selectedIndex = null;
     quizState.isAnswered = false;
     quizState.score = 0;
+    quizState.results = [];
     renderQuizStep();
+  }
+
+  // Left panel: big question counter, one step bar per question (coloured by result) and the running score
+  function renderQuizStatus(isDone) {
+    const status = document.getElementById('quiz_status');
+    if (!status || !quizState.questions.length) return;
+    const total = quizState.questions.length;
+    const current = isDone ? total : quizState.index + 1;
+
+    const steps = quizState.questions.map((question, i) => {
+      let stateClass = '';
+      if (i < quizState.results.length) stateClass = quizState.results[i] ? ' is_correct' : ' has_error';
+      else if (i === quizState.index && !isDone) stateClass = ' is_current';
+      return `<span class="quiz_step${stateClass}"></span>`;
+    }).join('');
+
+    status.innerHTML = `
+      <p class="quiz_count">
+        <strong>${padQuizNumber(current)}</strong>
+        <span>/ ${padQuizNumber(total)}</span>
+      </p>
+      <div class="quiz_steps" aria-hidden="true">${steps}</div>
+      <p class="quiz_score">맞힌 문제 <strong>${quizState.score}</strong>개</p>
+    `;
   }
 
   function renderQuizStep() {
@@ -678,7 +708,7 @@
     const isLast = quizState.index === total - 1;
 
     container.innerHTML = `
-      <p class="quiz_progress">${quizState.index + 1} / ${total}</p>
+      <p class="quiz_progress">QUESTION ${padQuizNumber(quizState.index + 1)}</p>
       <fieldset>
         <legend class="quiz_question">${escapeHtml(question.question)}</legend>
         <div class="quiz_choices" id="quiz_choices"></div>
@@ -686,13 +716,16 @@
       <div class="quiz_feedback" id="quiz_feedback" hidden></div>
       <div class="quiz_actions">
         <button type="button" class="btn_primary" id="quiz_check_btn" disabled>정답 확인</button>
-        <button type="button" class="btn_ghost" id="quiz_next_btn" hidden>${isLast ? '결과 보기' : '다음 문제'}</button>
+        <button type="button" class="btn_primary" id="quiz_next_btn" hidden>${isLast ? '결과 보기' : '다음 문제'}</button>
       </div>
     `;
 
     const choicesWrap = document.getElementById('quiz_choices');
     choicesWrap.innerHTML = question.choices.map((choice, i) => `
-      <button type="button" class="quiz_choice_btn" data-index="${i}">${escapeHtml(choice)}</button>
+      <button type="button" class="quiz_choice_btn" data-index="${i}">
+        <span class="quiz_choice_mark" aria-hidden="true">${QUIZ_CHOICE_MARKS[i] || i + 1}</span>
+        <span class="quiz_choice_text">${escapeHtml(choice)}</span>
+      </button>
     `).join('');
 
     choicesWrap.querySelectorAll('.quiz_choice_btn').forEach((btn) => {
@@ -701,6 +734,7 @@
 
     document.getElementById('quiz_check_btn').addEventListener('click', handleCheckAnswer);
     document.getElementById('quiz_next_btn').addEventListener('click', handleNextQuestion);
+    renderQuizStatus(false);
   }
 
   function handleChoiceSelect(index) {
@@ -720,19 +754,23 @@
 
     const isCorrect = quizState.selectedIndex === question.answerIndex;
     if (isCorrect) quizState.score += 1;
+    quizState.results[quizState.index] = isCorrect;
 
     document.querySelectorAll('.quiz_choice_btn').forEach((btn, i) => {
       btn.disabled = true;
+      btn.classList.remove('is_selected');
       if (i === question.answerIndex) btn.classList.add('is_correct');
       if (i === quizState.selectedIndex && !isCorrect) btn.classList.add('has_error');
     });
 
     const feedback = document.getElementById('quiz_feedback');
     feedback.hidden = false;
+    feedback.classList.toggle('has_error', !isCorrect);
     feedback.innerHTML = `<strong>${isCorrect ? '정답입니다!' : '아쉬워요!'}</strong> ${escapeHtml(question.explanation)}`;
 
     document.getElementById('quiz_check_btn').hidden = true;
     document.getElementById('quiz_next_btn').hidden = false;
+    renderQuizStatus(false);
   }
 
   function handleNextQuestion() {
@@ -746,15 +784,21 @@
     }
   }
 
+  function getQuizResultMessage(score, total) {
+    if (score === total) return '완벽해요! 진정한 탐험가네요.';
+    if (score / total >= 0.6) return '훌륭해요! 지구에 대해 꽤 많이 알고 있네요.';
+    return '괜찮아요. 다시 도전하면 더 잘할 수 있어요.';
+  }
+
   function renderQuizResult() {
     const total = quizState.questions.length;
     saveQuizScore(quizState.score, total);
 
     const container = document.getElementById('quiz_card');
     container.innerHTML = `
-      <p class="quiz_progress">퀴즈 완료</p>
-      <p class="quiz_result_score">${quizState.score} / ${total}</p>
-      <p class="quiz_feedback">지구와 자연에 대한 지식을 확인해봤어요.</p>
+      <p class="quiz_progress">QUIZ COMPLETE</p>
+      <p class="quiz_result_score">${quizState.score}<span> / ${total}</span></p>
+      <p class="quiz_result_message">${getQuizResultMessage(quizState.score, total)}</p>
       <div class="quiz_actions">
         <button type="button" class="btn_primary" id="quiz_restart_btn">다시 풀기</button>
       </div>
@@ -762,6 +806,7 @@
     document.getElementById('quiz_restart_btn').addEventListener('click', () => {
       initQuiz(quizState.questions);
     });
+    renderQuizStatus(true);
   }
 
   function saveQuizScore(score, total) {
